@@ -1,10 +1,10 @@
-
-*/mediainfo
-*/ziplambda.sh
-*/.chalice/deployments/
-*/.chalice/deploy
-*/.chalice/venv/
-*/.chalice/deployed.json
+**/*.zip
+**/mediainfo
+**/ziplambda.sh
+**/.chalice/deployments/
+**/.chalice/deploy
+**/.chalice/venv/
+**/.chalice/deployed.json
 __pycache__/
 *.py[cod]
 *$py.class
