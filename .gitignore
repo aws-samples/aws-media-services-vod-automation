@@ -1,4 +1,5 @@
 **/*.zip
+**/testworkload
 **/mediainfo
 **/ziplambda.sh
 **/.chalice/deployments/
