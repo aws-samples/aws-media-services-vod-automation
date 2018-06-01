@@ -1,4 +1,5 @@
 **/*.zip
+**/help-wanted*
 **/testworkload
 **/mediainfo
 **/ziplambda.sh
