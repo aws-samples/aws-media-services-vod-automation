@@ -1,0 +1,37 @@
+{
+  "resources": [
+    {
+      "name": "every_5min",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:us-west-2:526662735483:function:testworkload-dev-every_5min"
+    },
+    {
+      "name": "every_5min-event",
+      "resource_type": "cloudwatch_event",
+      "rule_name": "testworkload-dev-every_5min-event"
+    },
+    {
+      "name": "every_10min",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:us-west-2:526662735483:function:testworkload-dev-every_10min"
+    },
+    {
+      "name": "every_10min-event",
+      "resource_type": "cloudwatch_event",
+      "rule_name": "testworkload-dev-every_10min-event"
+    },
+    {
+      "name": "api_handler",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:us-west-2:526662735483:function:testworkload-dev"
+    },
+    {
+      "name": "rest_api",
+      "resource_type": "rest_api",
+      "rest_api_id": "18my73nnt0",
+      "rest_api_url": "https://18my73nnt0.execute-api.us-west-2.amazonaws.com/api/"
+    }
+  ],
+  "schema_version": "2.0",
+  "backend": "api"
+}

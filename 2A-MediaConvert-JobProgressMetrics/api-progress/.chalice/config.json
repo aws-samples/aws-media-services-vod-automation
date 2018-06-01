@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "app_name": "api-progress",
+  "environment_variables": {
+    "EventTable": "progress-EventTable",
+    "JobTable": "progress-JobTable"
+    },
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "manage_iam_role":false,
+      "iam_role_arn":"arn:aws:iam::ACCOUNT:role/progress-APILambdaRole"
+    }
+  }
+}

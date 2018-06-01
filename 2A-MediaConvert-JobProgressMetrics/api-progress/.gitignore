@@ -1,0 +1,4 @@
+.chalice/deployments/
+.chalice/deploy
+.chalice/venv/
+.chalice/deployed.json

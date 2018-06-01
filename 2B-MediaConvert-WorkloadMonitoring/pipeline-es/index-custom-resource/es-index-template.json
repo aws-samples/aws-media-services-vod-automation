@@ -1,0 +1,60 @@
+PUT _template/template_cloudwatch_metric
+{
+  "index_patterns": ["mc-cwmetric*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "CWMetric": {
+      "_source": {
+        "enabled": false
+      },
+      "properties": { 
+        "MetricName":    { "type": "text"  }, 
+        "Timestamp":  {
+          "type":   "date", 
+          "format": "epoch_second||epoch_millis"
+        }
+      }
+    }
+  }
+}
+PUT _template/template_cwmetric
+{
+  "template": "*cwmetric*",
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "CWMetric": {
+      "_source": {
+        "enabled": true
+      },
+      "properties": { 
+        "MetricName": { "type": "keyword"  }, 
+        "Timestamp":  {
+          "type":   "date", 
+          "format": "epoch_second||epoch_millis"
+        },
+        "Value": {"type": "scaled_float"},
+        "Dimensions": {
+            "properties": {
+                "Name" : {"type": "keyword"},
+                "Value" : {"type": "keyword"}
+        }
+      }
+    }
+  }
+}
+
+"manager": { 
+    "properties": {
+      "age":  { "type": "integer" },
+      "name": { 
+        "properties": {
+          "first": { "type": "text" },
+          "last":  { "type": "text" }
+        }
+      }
+    }
+  }

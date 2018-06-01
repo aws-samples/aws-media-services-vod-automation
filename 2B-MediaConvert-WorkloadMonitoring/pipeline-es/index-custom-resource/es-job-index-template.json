@@ -1,0 +1,77 @@
+{
+    "template": "jobindex*",
+    "settings": {"number_of_shards": 1 },
+      "mappings": {
+        "JobMapping": {
+          "properties": {
+            "analysis": {
+              "properties": {
+                "frameCount": {
+                  "type": "long"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "long"
+            },
+            "eventStatus": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "eventTimes": {
+              "properties": {
+                "completeTime": {
+                  "type": "date"
+                },
+                "createTime": {
+                  "type": "date"
+                },
+                "decodeTime": {
+                  "type": "date"
+                },
+                "firstProgressingTime": {
+                  "type": "date"
+                },
+                "lastProgressingTime": {
+                  "type": "date"
+                },
+                "lastStatusTime": {
+                  "type": "date"
+                },
+                "EncodeTime": {
+                    "type": "date"
+                  },
+                "lastTime": {
+                  "type": "date"
+                }
+              }
+            },
+            "timestampTTL": {
+              "type": "date"
+            },
+            "queue": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "timing": {
+              "properties": {
+                "submitTime": {
+                  "type": "date"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  
