@@ -19,12 +19,12 @@ The total cost for running this sample depends on the size and number of media a
 Workflows are independent of one another unless noted in the **Prerequisite** section of the workflow README file.
 
 1. **Video ingest and conversion basics** 
-    *  **[(A) MediaConvert watchfolder with SNS notifications (tutorial and CloudFormation):](./1A-MediaConvert-WatchfolderAndNotification/README.md)** Automatically trigger video transcoding when a video is added to an S3 bucket.  This workflow also has a [companion tutorial](./1A-MediaConvert-WatchfolderAndNotification/README-tutorial.md) to step through creating resources in the console.
+    *  **[(A) MediaConvert watchfolder with SNS notifications (tutorial and CloudFormation):](./1A-MediaConvert-WatchFolderAndNotification/README.md)** Automatically trigger video transcoding when a video is added to an S3 bucket.  This workflow also has a [companion tutorial](./1A-MediaConvert-WatchfolderAndNotification/README-tutorial.md) to step through creating resources in the console.
     * **[(B) MediaConvert events (tutorial and CloudFormation)](./1B-MediaConvert-events/README-tutorial.md)** Collect and store MediaConvert CloudWatch events using Lambda and Dynamodb
     
 2. **Video conversion job metrics and monitoring**
     * **[(A) MediaConvert job progress metrics](./2A-MediaConvert-JobProgressMetrics/README.md)** Analyze and track the progress of MediaConvert jobs. Calculate new metrics about in-progress jobs from MediaConvert CloudWatch events.
-    * **[(B) Monitoring MediaConvert workloads](./2B-MediaConvert-workload-monitoring/README.md)** Track and visualize MediaConvert workloads over time using CloudWatch events, Kinesis Streams, Kinesis Firehose and Elasticsearch
+    * **[(B) Monitoring MediaConvert workloads](./2B-MediaConvert-WorkloadMonitoring/README.md)** Track and visualize MediaConvert workloads over time using CloudWatch events, Kinesis Streams, Kinesis Firehose and Elasticsearch
 3. **Video analysis**
     *  **[(A) Analyze MediaConvert inputs using MediaInfo (tutorial and CloudFormation)](./1C-MediaConvert-mediainfo/README-tutorial.md)** Collect and store mediainfo output whenever MediaConvert INPUT_INFORMATION CloudWatch events occur using Lambda and Dynamodb
 
