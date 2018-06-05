@@ -17,8 +17,6 @@ The workflow will create the following API endpoints:
 
 This repository contains sample code for the Lambda functions depicted in the diagram as well as an [AWS CloudFormation](https://aws.amazon.com/cloudformation/) template for creating the function and related resources.
 
-There is a companion tutorial on capturing and storing MediaConvert event data in [FIXME](./README-tutorial.md) for creating a simliar workflow using the AWS console.  Use the tutorial to go in depth on how the workflow is built and configured.
-
 ![screenshot for instruction](../images/ProgressMetricsSlide.png)
 
 
