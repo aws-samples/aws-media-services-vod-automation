@@ -2,7 +2,7 @@
 
 Observability is key to effectivily operating any workflow on AWS.  In the previous module, we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining all of our job data to provide information about our transcoding workload as a whole. We'll use Kinesis Firehose to consume job progress data and  Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.
 
-![FIXME stack](images/WorkloadMonitoringStack.png)
+![FIXME stack](../images/WorkloadMonitoringStack.png)
 
 In this architecture, we set up a data pipeline where the progress metrics stack from the previous module is the _producer_ and the Elasticsearch stack is the _consumer_.
 
@@ -25,7 +25,7 @@ This sample uses AWS services that do not provide a free tier.  These include Ki
 
 ## Prerequisite
 
-1. You'll need the progress monitoring stack that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
+1. You'll need to deploy the the progress monitoring stack in [2A-MediaConvert-JobProgressMetrics](../2A-MediaConvert-JobProgressMetrics/README.md) that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
 
 2. MediaConvert workload: This workflow monitors the existing MediaConvert workloads in your account.  If you do not have any MediaConvert jobs running, there will be no data in the dashboard.
 
@@ -45,7 +45,7 @@ US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCl
 
 3. You should end up on a page that looks like this:
 
-    ![Kibana](images/Kibana.png)
+    ![Kibana](../images/Kibana.png)
 
 ### Create index patterns for event, job and metric data
 
@@ -70,15 +70,15 @@ US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCl
 4. Navigate to the directory `REPO/pipeline/pipeline-es/dashboards` and select the file `workload-dashboard.json`
 5. Select **Open** and accept the warning message about overwritting duplicate objects.
 
-    ![kibana saved objects](images/kibana-saved-objects.png)
+    ![kibana saved objects](../images/kibana-saved-objects.png)
 
 6. Open the imported dashboard by selecting **Dashboard** from the Kibana sidebar menu.  Select the dashboard `MediaConvert Workload (last 1 hour)` from the list.
 
-    ![kibana dashboard](images/kibana-dashboard.png)
+    ![kibana dashboard](../images/kibana-dashboard.png)
 
 7. You may need to adjust the time picker in the upper right corner to select the last hour of data.  Click on the timepicker and select the **Quick** menu.  Then select **Last 1 hour** from the choices presented.
 
-    ![timepicker](images/kibana-timepicker.png)
+    ![timepicker](../images/kibana-timepicker.png)
 
 
 

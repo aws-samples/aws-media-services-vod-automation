@@ -1,10 +1,10 @@
 # Keep track of MediaConvert job status using CloudWatch Events
 
-As with any application, observability is key to successful operation of video ingest workflows. Video conversion can be automated using various techniques such as watchfolders, web applications or batch processing.  Conversion jobs are created asynchronously and can be long running. Monitoring their progress is a task that is common to most automation scenarios.  For this purpose, MediaConvert provides CloudWatch events for tracking changes during the lifecycle of transcoding job resources.   
+As with any application, observability is key to successful operation of video conversion workflows. Video conversion can be automated using various techniques such as watchfolders, web applications or batch processing.  Conversion jobs are created asynchronously and can be long running. Monitoring their progress is a task that is common to most automation scenarios.  For this purpose, MediaConvert provides CloudWatch events for tracking changes during the lifecycle of transcoding job resources.   
 
-This sample code and stack demonstrates how to keep track of MediaConvert job progress using [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon CloudWatch Events](https://aws.amazon.com/cloudwatch) and [Amazon API Gateway](https://aws.amazon.com/api-gateway).  We'll use [Chalice](https://github.com/aws/chalice) to quickly create APIs.  Chalice is a python serverless microframework for AWS. It allows you to quickly create and deploy applications that use Amazon API Gateway and AWS Lambda.  We'll also use [mediainfo](https://mediaarea.net/en/MediaInfo), an open source video package analysis tool, to enhance the metadata provided by the MediaConvert events.
+This sample code and AWS stack demonstrates how to keep track of MediaConvert job progress using [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon CloudWatch Events](https://aws.amazon.com/cloudwatch) and [Amazon API Gateway](https://aws.amazon.com/api-gateway).  We'll use [Chalice](https://github.com/aws/chalice) to quickly create APIs.  Chalice is a python serverless microframework for AWS. It allows you to quickly create and deploy applications that use Amazon API Gateway and AWS Lambda.  We'll also use [mediainfo](https://mediaarea.net/en/MediaInfo), an open source video package analysis tool, to enhance the metadata provided by the MediaConvert events.
 
-The data will help us answer questions like:
+The data collected will help us answer questions like:
 
 * What is the status of my MediaConvert job?
 * How fast are my jobs progressing?
@@ -329,7 +329,7 @@ You can set the expiration of stream data on the stack.   If you do not wish to 
 
 ### Lambda  
 
-- **EventInvokeLambda - a Lambda Permission that allows CloudWatch events to invoke the EventCollectorLambda lambda function.              
+- **EventInvokeLambda** - a Lambda Permission that allows CloudWatch events to invoke the EventCollectorLambda lambda function.              
 
 - **EventCollectorLambda** - Mediaconvert events trigger the event-collector lambda function.  The Lambda function does several things with MediaConvert events:
 
