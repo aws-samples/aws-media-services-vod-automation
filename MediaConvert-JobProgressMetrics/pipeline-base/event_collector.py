@@ -38,7 +38,7 @@ logger.setLevel(logging.INFO)
 
 def get_signed_url(expires_in, bucket, obj):
     """
-    Generate a signed URL
+    Generate a signed URL for an object in S3 so it can be accessed as an HTTP resource
     :param expires_in:  URL Expiration time in seconds
     :param bucket:
     :param obj:         S3 Key name
@@ -51,11 +51,10 @@ def get_signed_url(expires_in, bucket, obj):
 
 def jobMediaInfo(job):
     """
-
-    :param job:
+    run mediainfo analysis on the job inputs and add the results to the job JSON
+    :param job:  JSON job data struture from dynamodb
     """
-    print('Mediainfo: job: ' + job['id'])
-
+    
     # Loop through input videos in the job
     for input in job['settings']['inputs']:
         s3_path = input['fileInput']
@@ -90,7 +89,11 @@ def jobMediaInfo(job):
     return True
 
 def jobAnalyzeInputs(job):
-    
+    """
+    Run analysis on the job inputs and calculate job metrics based on the analysis
+    :param job:  JSON job data struture from dynamodb
+    """
+
     job['analysis'] = {}
     
     job['analysis']['frameCount'] = 0
@@ -127,7 +130,10 @@ def jobAnalyzeInputs(job):
         job['analysis']['codec'] = input['mediainfo']['File']['track'][0]['Video_Format_List']
 
 def putProgressMetrics(job, timestamp, METRICSTREAM):
-    """ 
+    """
+    Write job progress metrics to METRICSTREAM for downstream consumers
+    :param job:  JSON job data struture from dynamodb
+    :param timestamp: timestamp to use for the group of metrics
     """
     for key, value in job['progressMetrics'].items():
         putJobMetric(job, timestamp, key, value, METRICSTREAM)
@@ -135,7 +141,11 @@ def putProgressMetrics(job, timestamp, METRICSTREAM):
     return True
 
 def putStatusMetrics(job, timestamp, status, METRICSTREAM):
-    
+    """
+    Write job status metrics to METRICSTREAM for downstream consumers
+    :param job:  JSON job data struture from dynamodb
+    :param timestamp: timestamp to use for the group of metrics
+    """
     #if 'eventStatus' not in job:
     #    return
 
@@ -146,9 +156,13 @@ def putStatusMetrics(job, timestamp, status, METRICSTREAM):
             putJobMetric(job, timestamp, s, 0, METRICSTREAM)
 
 
-# Store metrics in the same format as Cloudwatch in case we want to use
-# Cloudwatch as a metrics store later
+
 def getJobMetricDimensions(job):
+    """
+    Store metrics in the same format as Cloudwatch in case we want to use
+    Cloudwatch as a metrics store later
+    :param job:  JSON job data struture from dynamodb
+    """
     ret = {}
     dimensions = []
     filters = {}
@@ -189,6 +203,14 @@ def getJobMetricDimensions(job):
     return ret
 
 def putJobMetric(job, timestamp, metricname, value, METRICSTREAM):
+    """
+    Push a single job metric into METRICSTREAM
+    :param job:  JSON job data struture from dynamodb
+    :param timestamp: Timestamp to use for the metric
+    :param metricname: Name of the metric
+    :param value: Value of the metric
+    :param METRICSTREAM: name of the metric stream for this stack
+    """
     filters_dims = getJobMetricDimensions(job)
     dims = filters_dims['dimensions']
 
@@ -217,7 +239,11 @@ def putJobMetric(job, timestamp, metricname, value, METRICSTREAM):
 
 
 def getMediaConvertJob(id, JOBTABLE):
-    
+    """
+    Retrieve a job data structure from dynamodb
+    :param id:  id of the job
+    :param JOBTABLE: Name of the dynamodb job table for this stack
+    """    
     try:
         table = DYNAMO_CLIENT.Table(JOBTABLE)
         response = table.get_item(Key={'id': id}, ConsistentRead=True)
@@ -234,10 +260,11 @@ def getMediaConvertJob(id, JOBTABLE):
             return item
 
 def calculateProgressMetrics(job):
-    '''
-    job has the most recent values for the based metrics and base durations from events.
-    Calculate progress metrics.
-    '''
+    """
+    job has the most recent values updated for the current event being processed.  Calculate status
+    and progress metrics using the new information.
+    :param job:  JSON job data struture from dynamodb
+    """
     progressMetrics = {}
 
     # BASE TIMES FROM EVENTS
@@ -303,6 +330,8 @@ def calculateProgressMetrics(job):
 def jobCreateEvent(event, JOBTABLE):
     """
     Process a job create event and return the updated job data.
+    :param event:  JSON event data struture from Cloudwatch
+    :param JOBTABLE: name of the job data table for this stack
     """
         
     #tsevent = int(datetime.datetime.strptime(event["time"], "%Y-%m-%dT%H:%M:%SZ").timestamp())
@@ -366,7 +395,12 @@ def jobCreateEvent(event, JOBTABLE):
     return job
 
 def jobStateChangeEvent(event, JOBTABLE):
-    
+    """
+    Process a job state change event and return the updated job data.
+    :param event:  JSON event data struture from Cloudwatch
+    :param JOBTABLE: name of the job data table for this stack
+    """
+
     progressMetrics = {}
 
     tsevent = int(datetime.datetime.strptime(event["time"], "%Y-%m-%dT%H:%M:%SZ").timestamp())
@@ -491,9 +525,9 @@ def lambda_handler(event, context):
     """
     Event collector for mediaconvert event type.  Events are cleaned to ensure they
     have the minimum consistent schema.  The collector maintains a persistent job object 
-    that it updates as events occur.  Since events may arrive out of order from the 
-    time they are generated, we need to be careful about overwriting newer infomration
-    with older information.
+    in dydnamodb that it updates as events occur.  Since events may arrive out of order from the 
+    time they are generated, we need to be careful about overwriting newer information
+    with older information.  
 
     Each event should carry at least these key value pairs:
     
