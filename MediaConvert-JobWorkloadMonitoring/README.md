@@ -1,6 +1,6 @@
 # Monitoring MediaConvert Workloads using CloudWatch Events, Kinesis, and Elasticsearch
 
-Observability is key to effectivily operating any workflow on AWS.  Workload monitoring helps to understand the characteristics of the load we are putting on a system over time.  This information can be useful for resolving problems, analyzing costs and for understanding how to make workflows more efficient.  In [VOD Automation Part 2: MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md), we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining the data from all of our jobs to provide information about our transcoding workload as a whole. We'll use [Kinesis Firehose](https://aws.amazon.com/kinesis/data-firehose/) to consume job progress metrics from a stream and Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.  Kinesis Firehose simplifies the configuration of setting up data pipelines to common data stores on AWS, such as Elasticsearch.  Elasticsearch provides both search and timeseries analysis capabilities that useful for ad-hoc analysis of semi-structured data and for creating dashboards.  Finally, Kibana, which is packaged with Elasticsearch is used for data visulization.
+Observability is key to effectivily operating any workflow on AWS.  Workload monitoring helps to understand the characteristics of the load we are putting on a system over time.  This information can be useful for resolving problems, analyzing costs and for understanding how to make workflows more efficient.  In [VOD Automation Part 2: MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md), we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining the data from all of our jobs to provide information about our transcoding workload as a whole. We'll use [Kinesis Firehose](https://aws.amazon.com/kinesis/data-firehose/) to consume job progress metrics from a stream and Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.  Kinesis Firehose simplifies the configuration of setting up data pipelines to common data stores on AWS, such as Elasticsearch.  Elasticsearch provides both search and timeseries analysis capabilities that useful for ad-hoc analysis of semi-structured data and for creating dashboards.  Finally, Kibana, which is packaged with Elasticsearch is used for data visualization.
 
 ![FIXME stack](../images/MonitoringSlide.png)
 
@@ -81,9 +81,11 @@ US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCl
 
     ![kibana dashboard](../images/kibana-dashboard.png)
 
+
+
 7. You may need to adjust the time picker in the upper right corner to select the last hour of data.  Click on the timepicker and select the **Quick** menu.  Then select **Last 1 hour** from the choices presented.
 
     ![timepicker](../images/kibana-timepicker.png)
 
 
-
+NOTE: the appearance of the dashboard may be slightly different than the one shown here.  It depends on the workload running in your account and region where the stack is deployed.  There should be one row of graphs for each MediaConvet queue that has active MediaConvert jobs in the past hour.  There should also be a table at the bottom of the page with job details for the last hour.  The dashboard in the example shows an account with 3 MediaConvert queues.
