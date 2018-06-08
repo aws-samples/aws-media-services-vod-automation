@@ -1,11 +1,15 @@
 # Monitoring MediaConvert Workloads using CloudWatch Events, Kinesis, and Elasticsearch
 
-Observability is key to effectivily operating any workflow on AWS.  In the previous module, we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining all of our job data to provide information about our transcoding workload as a whole. We'll use Kinesis Firehose to consume job progress metrics from a stream and Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.
+Observability is key to effectivily operating any workflow on AWS.  Workload monitoring helps to understand the characteristics of the load we are putting on a system over time.  This information can be useful for resolving problems and for understanding how to make workflows more efficient.  In [VOD Automation Part 2: MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md), we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining the data from all of our jobs to provide information about our transcoding workload as a whole. We'll use Kinesis Firehose to consume job progress metrics from a stream and Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.
 
 ![FIXME stack](../images/MonitoringSlide.png)
 
 
 In this architecture, we set up a data pipeline where the [MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md) stack from the previous module is the _producer_ and the Elasticsearch stack is the _consumer_.
+
+Once the stack is in place we can use the provided dashboard to visulualize the MediaConvert workload for a specific region.
+
+The dashboard is a just an example with what can be done with this data.  Use Kibana to do analysis and experiment to provide information that is useful to you.
 
 # Stack Resources
 
