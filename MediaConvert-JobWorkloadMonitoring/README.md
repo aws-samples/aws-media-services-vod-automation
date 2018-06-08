@@ -9,13 +9,13 @@ In this architecture, we set up a data pipeline where the [MediaConvert Job Prog
 
 # Stack Resources
 
-**MediaConvert Progress Metrics stack:** We'll use the data produced from the Job Progress Metrics stack.
+* **MediaConvert Progress Metrics stack:** We'll use the data produced from the Job Progress Metrics stack.
 
-**Kinesis Firehose:** A Kinesis firehose is created for each kind of data that is collected in the progress stack: events, jobs and metrics.  The firehose is configured to deliver data to an Elasticsearch instance.  The firehose is also configured to deliver data to S3 if delivery to Elasticsearch fails. 
+* **Kinesis Firehose:** A Kinesis firehose is created for each kind of data that is collected in the progress stack: events, jobs and metrics.  The firehose is configured to deliver data to an Elasticsearch instance.  The firehose is also configured to deliver data to S3 if delivery to Elasticsearch fails. 
 
-**Elasticsearch:** Elasticsearch is used to perform filtering, timeseries analysis and aggregation of job data so we can view information about our workload.  
+* **Elasticsearch:** Elasticsearch is used to perform filtering, timeseries analysis and aggregation of job data so we can view information about our workload.  
 
-**Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of the data types generated from the Progress Metrics stack: events, jobs and metrics.
+* **Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of the data types generated from the Progress Metrics stack: events, jobs and metrics.
 
 
 ## Costs
