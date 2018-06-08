@@ -14,7 +14,7 @@ In this architecture, we set up a data pipeline where the progress metrics stack
 
 **Elasticsearch:** Elasticsearch is used to perform filtering, timeseries analysis and aggregation of job data so we can view information about our workload.  
 
-    **Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of our m
+**Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of our m
 
 
 ## Costs
@@ -25,7 +25,7 @@ This sample uses AWS services that do not provide a free tier.  These include Ki
 
 ## Prerequisite
 
-1. You'll need to deploy the the progress monitoring stack in [2A-MediaConvert-JobProgressMetrics](../2A-MediaConvert-JobProgressMetrics/README.md) that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
+1. You'll need to deploy the the progress monitoring stack in [MediaConvert-JobProgressMetrics](../MediaConvert-JobProgressMetrics/README.md) that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
 
 2. MediaConvert workload: This workflow monitors the existing MediaConvert workloads in your account.  If you do not have any MediaConvert jobs running, there will be no data in the dashboard.
 

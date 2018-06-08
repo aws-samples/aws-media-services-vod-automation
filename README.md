@@ -24,7 +24,7 @@ Workflows are independent of one another unless noted in the **Prerequisite** se
     
 2. **Video conversion job metrics and monitoring**
     * **[Collecting MediaConvert job progress metrics](./MediaConvert-JobProgressMetrics/README.md)** Analyze and track the progress of MediaConvert jobs. Calculate new metrics about in-progress jobs from MediaConvert CloudWatch events.
-    * **[Monitoring MediaConvert job workloads](./MediaConvert-WorkloadMonitoring/README.md)** Track and visualize MediaConvert workloads over time using CloudWatch events, Kinesis Streams, Kinesis Firehose and Elasticsearch
+    * **[Monitoring MediaConvert job workloads](./MediaConvert-JobWorkloadMonitoring/README.md)** Track and visualize MediaConvert workloads over time using CloudWatch events, Kinesis Streams, Kinesis Firehose and Elasticsearch
 3. **Video analysis**
     *  **[Analyze MediaConvert inputs using MediaInfo (tutorial and CloudFormation)](./VideoAnalysis-MediainfoLambda/README-tutorial.md)** Collect and store mediainfo output whenever MediaConvert INPUT_INFORMATION CloudWatch events occur using Lambda and Dynamodb
 
