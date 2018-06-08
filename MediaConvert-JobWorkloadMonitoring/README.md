@@ -15,7 +15,7 @@ In this architecture, we set up a data pipeline where the [MediaConvert Job Prog
 
 **Elasticsearch:** Elasticsearch is used to perform filtering, timeseries analysis and aggregation of job data so we can view information about our workload.  
 
-**Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of our m
+**Elasticsearch Index Custom Resources:** Custom resources are included in the stack to create index mappings for each of the data types generated from the Progress Metrics stack: events, jobs and metrics.
 
 
 ## Costs
