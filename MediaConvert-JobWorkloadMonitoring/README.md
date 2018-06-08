@@ -1,12 +1,13 @@
 # Monitoring MediaConvert Workloads using CloudWatch Events, Kinesis, and Elasticsearch
 
-Observability is key to effectivily operating any workflow on AWS.  In the previous module, we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining all of our job data to provide information about our transcoding workload as a whole. We'll use Kinesis Firehose to consume job progress data and  Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.
+Observability is key to effectivily operating any workflow on AWS.  In the previous module, we kept track of the progress of MediaConvert jobs over time and exposed it as an API that could be called from web applications.  In this module, we'll be using the same data, but we'll be combining all of our job data to provide information about our transcoding workload as a whole. We'll use Kinesis Firehose to consume job progress metrics from a stream and Elasticsearch and Kibana to search and aggregate the data and visualize our workloads.
 
-![FIXME stack](../images/WorkloadMonitoringStack.png)
+![FIXME stack](../images/MonitoringSlide.png)
 
-In this architecture, we set up a data pipeline where the progress metrics stack from the previous module is the _producer_ and the Elasticsearch stack is the _consumer_.
 
-# Components
+In this architecture, we set up a data pipeline where the [MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md) stack from the previous module is the _producer_ and the Elasticsearch stack is the _consumer_.
+
+# Stack Resources
 
 **MediaConvert Progress Metrics stack:** We'll use the data produced from the Job Progress Metrics stack.
 
@@ -21,7 +22,7 @@ In this architecture, we set up a data pipeline where the progress metrics stack
 
 This sample uses AWS services that do not provide a free tier.  These include Kinesis, Kinesis Firehose and Elasticsearch.  The billing will depend on the amount of data that is present in your pipeline.  The amount of data will vary depending on your MediaConvert workload.
 
-# Quickstart
+# Running the example
 
 ## Prerequisite
 
