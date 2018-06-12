@@ -9,7 +9,7 @@ In this architecture, we set up a data pipeline where the [MediaConvert Job Prog
 
 Once the stack is in place we can use the provided dashboard to visulualize the MediaConvert workload for a specific region.
 
-The dashboard is a just an example with what can be done with this data.  Use Kibana to do analysis and experiment to provide information that is useful to you.
+The dashboard is a just an example with what can be done with this data.  Use Kibana to explore the data and experiment to provide information that is useful to you.
 
 # Stack Resources
 
@@ -33,6 +33,19 @@ This sample uses AWS services that do not provide a free tier.  These include Ki
 1. You'll need to deploy the the progress monitoring stack in [MediaConvert-JobProgressMetrics](../MediaConvert-JobProgressMetrics/README.md) that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
 
 2. MediaConvert workload: This workflow monitors the existing MediaConvert workloads in your account.  If you do not have any MediaConvert jobs running, there will be no data in the dashboard.
+
+## Securing Kibana
+
+The MediaConvert job data exposed in this stack includes the account id it is running in. 
+
+The stack uses an [ip-based policy](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip) to grant access to Elaticsearch resources.  This grants access to the Elasticsearch APIs and Kibana, but only through the IP you provide to the stack when it is deployed.  See the the **ESDomain** logical resource in [pipeline-es.yaml](./pipeline-es.yaml) to view the policy. 
+
+See the following resources for other methods of setting up access to Kibana HTTP resources:
+
+* [How to Control Access to Your Amazon Elasticsearch Service Domain](https://aws.amazon.com/blogs/security/how-to-control-access-to-your-amazon-elasticsearch-service-domain/) 
+* [Amazon Cognito Authentication for Kibana](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html)
+* [Controlling access to Kibana and Logstash](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html#es-kibana-proxy)
+
 
 ## Deploy the stack 
 
