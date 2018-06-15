@@ -157,9 +157,7 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
             "lastTime": 1524854353.0
         },
         "filters": {
-            "account": "XXXXXXXXXXX",
             "jobId": "1524866232400-dfjxlg",
-            "queue": "arn:aws:mediaconvert:us-east-1:XXXXXXXXXXX:queues/Default",
             "queueName": "Default",
             "region": "us-east-1"
         },
@@ -220,9 +218,7 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
                 "lastTime": 1524866329.0
             },
             "filters": {
-                "account": "XXXXXXXXXXX",
                 "jobId": "1524866232400-dfjxlg",
-                "queue": "arn:aws:mediaconvert:us-east-1:XXXXXXXXXXX:queues/Default",
                 "queueName": "Default",
                 "region": "us-east-1"
             },
@@ -257,8 +253,7 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
                 "lastTime": 1524854353.0
             },
             "filters": {
-                "account": "XXXXXXXXXXX","jobId": "1524854276176-osxgul",
-                "queue": "arn:aws:mediaconvert:us-east-1:XXXXXXXXXXX:queues/Default",
+                "jobId": "1524854276176-osxgul",
                 "queueName": "Default",
                 "region": "us-east-1"
             },
