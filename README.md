@@ -19,7 +19,7 @@ The total cost for running this sample depends on the size and number of media a
 Workflows are independent of one another unless noted in the **Prerequisite** section of the workflow README file.
 
 1. **Video ingest and conversion basic workflows** 
-    *  **[MediaConvert watchfolder with SNS notifications (tutorial and CloudFormation):](./MediaConvert-WorkflowWatchFolderAndNotification/README.md)** Automatically trigger video transcoding when a video is added to an S3 bucket.  This workflow also has a [companion tutorial](./MediaConvert-WorkflowWatchfolderAndNotification/README-tutorial.md) to step through creating resources in the console.
+    *  **[MediaConvert watchfolder with SNS notifications (tutorial and CloudFormation):](./MediaConvert-WorkflowWatchFolderAndNotification/README.md)** Automatically trigger video transcoding when a video is added to an S3 bucket.  This workflow also has a [companion tutorial](./MediaConvert-WorkflowWatchFolderAndNotification/README-tutorial.md) to step through creating resources in the console.
     
     
 2. **Video conversion job metrics and monitoring**
