@@ -47,12 +47,16 @@ def job_progress(jobId):
     except ClientError as e:
         logger.info("ClientError from Dynamodb {}".format(e.response['Error']['Message']))
         raise BadRequestError("Dynamodb returned error message '%s'" % e.response['Error']['Message'])
-    except Excpetion as e:
+    except Exception as e:
         logger.info("ClientError from Dynamodb {}".format(e.response['Error']['Message']))
         raise ChaliceViewError("Dynamodb returned error message '%s'" % e.response['Error']['Message'])
 
     print (json.dumps(response, cls=DecimalEncoder))
-    return response['Items'][0]
+    # there is no information about this job yet
+    if response['Count'] > 0:
+        return response['Items'][0]
+    else:
+        return {}
 
 @app.route('/progress/status/{status}', methods=['GET'], cors=True)
 def status_progress(status):
@@ -67,11 +71,10 @@ def status_progress(status):
         KeyConditionExpression=Key('status').eq(status),
         ScanIndexForward=False
     )
- 
     items =  response['Items']
 
     while True:
-        print (len(response['Items']))
+        print(len(response['Items']))
         if response.get('LastEvaluatedKey'):
             response = table.scan(
                 ExclusiveStartKey=response['LastEvaluatedKey'],

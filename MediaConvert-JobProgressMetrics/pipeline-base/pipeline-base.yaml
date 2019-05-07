@@ -30,8 +30,8 @@ Parameters:
 Mappings:
   SourceCode:
     General:
-      S3Bucket: "elementalrodeo99-us-east-1"
-      KeyPrefix: "pipeline/pipeline-base"
+      S3Bucket: "rodeolabz"
+      KeyPrefix: "vodtk/2-mediaconvert-job-progress-metrics/pipeline-base"
 
 Resources:
 
@@ -282,8 +282,8 @@ Resources:
       Handler: event_collector.lambda_handler
       Role: !GetAtt EventLambdaRole.Arn
       Code:
-        S3Bucket: !FindInMap ["SourceCode", "General", "S3Bucket"]
-        S3Key: !Join ["/", [!FindInMap ["SourceCode", "General", "KeyPrefix"],  "lambda.zip"]]
+        S3Bucket: !Join ["-", [!FindInMap ["SourceCode", "General", "S3Bucket"], Ref: "AWS::Region"]]
+        S3Key: !Join ["/", [!FindInMap ["SourceCode", "General", "KeyPrefix"], "event_collector.zip"]]
       Environment:
         Variables:
           EventTable: !Ref EventTable 

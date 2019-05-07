@@ -9,7 +9,7 @@ The data collected will help us answer questions like:
 * What is the status of my MediaConvert job?
 * How fast are my jobs progressing?
 * How much of my job has been processed by MediaConvert?
-* How long did my job take in diferent stages of processing?
+* How long did my job take in different stages of processing?
 * Did my job have to wait to be processed by MediaConvert because I had exceeded the capacity for the region?
 
 After the job is complete, the metrics are available if you want to analyze your workload further.
@@ -38,15 +38,17 @@ You will need to deploy the progress metrics collection stack and deploy the Cha
 
 ## Prerequisites
 
-MediaConvert workload: this stack monitors existing workloads in your account.  You will need a mechanism to create MediaConvert jobs either from the AWS console or another workflow in order to test this stack.
+MediaConvert workload: this stack monitors existing workloads in your account.  You will need a mechanism to create MediaConvert jobs either from the AWS console or another [workflow like using watch folders](https://github.com/aws-samples/aws-media-services-vod-automation/tree/master/MediaConvert-WorkflowWatchFolderAndNotification) in order to test this stack.
 
 ## Deploy the progress metrics stack
 
-To get started right away just launch the stack using the button below.  You can also create your own deployment package using the instructions in the [Build a deployment package from the github repo](#build-a-deployment- package-from-the-github-repo) section later in this document.
+To get started right away just launch the stack using one of the buttons below.
 
 Region| Launch
 ------|-----
-US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/elementalrodeo99-us-east-1/pipeline/pipeline-base/pipeline-base.yaml)
+us-east-1 (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-east-1/vodtk/2-mediaconvert-job-progress-metrics/pipeline-base/pipeline-base.yaml)
+us-west-2 (Oregon) | [![Launch in us-west-2](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-west-2/vodtk/2-mediaconvert-job-progress-metrics/pipeline-base/pipeline-base.yaml)
+
 
 ## Build the progress API
 
@@ -61,13 +63,13 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
     source <virtualenv-dir>/vodtk/bin/activate
     
     ```
-1. Open the progress API folder and install the python dependencies for this lambda
+1. Change directory into `api-progress` and install the python dependencies for this lambda.
 
     ```
     cd api-progress
     
     pip install -r requirements.txt
-    ``
+    ```
 2. Find the output parameters from the pipeline cloudformation stack you created.  In the Cloudformation console, select the `pipeline` stack.  On the stack console page, choose the **Outputs** tab.  The outputs should be listed on the page. 
 
 2. You will be using a pre-exisitng Chalice project that is already setup in this folder.  Open the Chalice configuration file, .chalice/config.json, in an editor.  Replace the values below with the values from the pipeline stack.   Then, replace the contents of the config.json with your JSON. 
@@ -110,7 +112,12 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
 
 ## Test the progress API
 
-1. The workflow will automatically begin collecting metrics for any existing workload in the region.  If you don't have a workload running, run a MediaConvert job in whatever way you normally do it.  Make sure you run it in the region you deployed the stack in.
+1. The workflow will automatically begin collecting metrics for any existing workload in the region.  If you don't have a workload running, run a MediaConvert job in the region you deployed your stack in. You will need to be explicit about two settings in your job:
+    * **UserMetadata** - make sure to include a `workflow` tag
+    * **StatusUpdateInterval** - MediaConvert jobs defaults to 60 seconds, however, for small media files that take less than a minute to process, this is not going to give you granularity in the progress updates. Setting it to 15 seconds or less is more appropriate. For bigger media files that take minutes to process, taking the default is okay. Adjust accordingly.
+    
+    ![alt](../images/job-settings.png)
+
 2. We'll test the API using httpie.  Install it if you don't already have it.  Or, you can test the API using another tool such a Postman.
 
     ```
@@ -130,50 +137,55 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
     Access-Control-Allow-Headers: Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key
     Access-Control-Allow-Origin: *
     Connection: keep-alive
-    Content-Length: 769
+    Content-Length: 1011
     Content-Type: application/json
-    Date: Fri, 27 Apr 2018 21:44:48 GMT
-    Via: 1.1 e6b9bae86e720d09b3641b95c50c6c83.cloudfront.net (CloudFront)
-    X-Amz-Cf-Id: KnmRs6Zu7K_cFysNCcQOINGPGFWF5H-aUfV_v_ccrCt2Pm1JAofYKw==
-    X-Amzn-Trace-Id: sampled=0;root=1-5ae399d0-bf3f99a8625f31479d78521a
+    Date: Mon, 06 May 2019 18:57:11 GMT
+    Via: 1.1 0005a84c2971ff4f5bbb79e7ebc622a9.cloudfront.net (CloudFront)
+    X-Amz-Cf-Id: gyVTZ733RbRyRCQdPYUe7I-OLetC2hjbAtbQyf154hAqXaU1sm-iYg==
+    X-Amzn-Trace-Id: Root=1-5cd08386-81455c9d33a507cf4d4eb093;Sampled=0
     X-Cache: Miss from cloudfront
-    x-amz-apigw-id: GBT4mGthoAMFTeg=
-    x-amzn-RequestId: 35530b72-4a64-11e8-9081-4d5ea40d12f6
+    x-amz-apigw-id: ZRl9FFf7IAMFr7A=
+    x-amzn-RequestId: c0f2a840-7030-11e9-a058-e341f9335dfd
 
     {
         "analysis": {
             "codec": "AVC",
-            "frameCount": 7230.0,
+            "frameCount": 19036.0,
             "num_inputs": 1.0,
-            "num_outputs": 1.0
+            "num_outputs": 5.0
         },
-        "createdAt": 1524854276.0,
+        "createdAt": 1557168772.0,
         "eventTimes": {
-            "completeTime": 1524854353.0,
-            "createTime": 1524854276.0,
-            "firstProgressingTime": 1524854276.0,
-            "lastProgressingTime": 1524854353.0,
-            "lastStatusTime": 1524854353.0,
-            "lastTime": 1524854353.0
+            "createTime": 1557168772.0,
+            "firstProgressingTime": 1557168772.0,
+            "lastProgressingTime": 1557168775.0,
+            "lastStatusTime": 1557169015.0,
+            "lastTime": 1557169015.0
         },
         "filters": {
-            "jobId": "1524866232400-dfjxlg",
+            "application": "emc-watchfolder",
+            "input": "s3://emc-watchfolder-1v41f1j54lmg2/inputs/test.mp4",
+            "jobId": "1557168772645-644a8h",
             "queueName": "Default",
-            "region": "us-east-1"
+            "region": "us-east-1",
+            "settings": "Default",
+            "workflow": "Test"
         },
-        "id": "1524854276176-osxgul",
+        "id": "1557168772645-644a8h",
         "progressMetrics": {
-            "decodeRate": 93.8961038961039,
-            "estDecodeTimeRemaining": 0.0,
-            "frameCount": 7230.0,
-            "framesDecoded": 7230.0,
-            "framesRemaining": 0.0,
-            "percentComplete": 100.0,
-            "progressingDuration": 77.0,
+            "decodeRate": 69.58024691358025,
+            "estDecodeTimeRemaining": 30.583392476933994,
+            "frameCount": 19036.0,
+            "framesDecoded": 16908.0,
+            "framesRemaining": 2128.0,
+            "percentDecodeComplete": 89.0,
+            "percentJobComplete": 81.0,
+            "phase": "TRANSCODING",
+            "progressingDuration": 3.0,
             "queuedDuration": 0.0,
-            "statusDuration": 77.0
+            "statusDuration": 243.0
         },
-        "status": "COMPLETE"
+        "status": "PROGRESSING"
     }
     ```
 
@@ -190,89 +202,98 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
     Access-Control-Allow-Headers: Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key
     Access-Control-Allow-Origin: *
     Connection: keep-alive
-    Content-Length: 1595
+    Content-Length: 2017
     Content-Type: application/json
-    Date: Fri, 27 Apr 2018 22:00:38 GMT
-    Via: 1.1 7cce0961450ef6caf68e8045176d0c0d.cloudfront.net (CloudFront)
-    X-Amz-Cf-Id: Ad4J-TnlN4v7-0pC4Jknq2noFNVaAKS7CkJWwtbpvzz-biiy--oJaQ==
-    X-Amzn-Trace-Id: sampled=0;root=1-5ae39d86-22702d7ae3e43b81f1551a7e
+    Date: Mon, 06 May 2019 18:59:55 GMT
+    Via: 1.1 a4fe306096165bb1e86e69365dc8fac2.cloudfront.net (CloudFront)
+    X-Amz-Cf-Id: td_AMrxq3pZhJx526tCxj0m6JRaODqmkxMooiOsmLcBcKFYPmhDCYQ==
+    X-Amzn-Trace-Id: Root=1-5cd0842a-52aec61b0a514a2c67ccb6b6;Sampled=0
     X-Cache: Miss from cloudfront
-    x-amz-apigw-id: GBWM-E0zIAMFyrg=
-    x-amzn-RequestId: 6b50d881-4a66-11e8-9dbd-efd72347bccb
+    x-amz-apigw-id: ZRmWsEFZoAMFj6g=
+    x-amzn-RequestId: 22aa3822-7031-11e9-8f84-31a1ef023bb8
 
     [
         {
             "analysis": {
                 "codec": "AVC",
-                "frameCount": 7230.0,
+                "frameCount": 19036.0,
                 "num_inputs": 1.0,
-                "num_outputs": 1.0
+                "num_outputs": 5.0
             },
-            "createdAt": 1524866232.0,
+            "createdAt": 1557168772.0,
             "eventTimes": {
-                "completeTime": 1524866329.0,
-                "createTime": 1524866232.0,
-                "firstProgressingTime": 1524866262.0,
-                "lastProgressingTime": 1524866329.0,
-                "lastStatusTime": 1524866329.0,
-                "lastTime": 1524866329.0
+                "completeTime": 1557169048.0,
+                "createTime": 1557168772.0,
+                "firstProgressingTime": 1557168772.0,
+                "lastProgressingTime": 1557169048.0,
+                "lastStatusTime": 1557169048.0,
+                "lastTime": 1557169048.0
             },
             "filters": {
-                "jobId": "1524866232400-dfjxlg",
+                "application": "emc-watchfolder",
+                "input": "s3://emc-watchfolder-1v41f1j54lmg2/inputs/test.mp4",
+                "jobId": "1557168772645-644a8h",
                 "queueName": "Default",
-                "region": "us-east-1"
+                "region": "us-east-1",
+                "settings": "Default",
+                "workflow": "Test"
             },
-            "id": "1524866232400-dfjxlg",
+            "id": "1557168772645-644a8h",
             "progressMetrics": {
-                "decodeRate": 107.91044776119404,
+                "decodeRate": 68.97101449275362,
                 "estDecodeTimeRemaining": 0.0,
-                "frameCount": 7230.0,
-                "framesDecoded": 7230.0,
+                "frameCount": 19036.0,
+                "framesDecoded": 19036.0,
                 "framesRemaining": 0.0,
                 "percentDecodeComplete": 100.0,
-                "progressingDuration": 67.0,
-                "queuedDuration": 30.0,
-                "statusDuration": 67.0
+                "percentJobComplete": 100.0,
+                "progressingDuration": 276.0,
+                "queuedDuration": 0.0,
+                "statusDuration": 276.0
             },
             "status": "COMPLETE"
         },
         {
             "analysis": {
                 "codec": "AVC",
-                "frameCount": 7230.0,
+                "frameCount": 2160.0,
                 "num_inputs": 1.0,
-                "num_outputs": 1.0
+                "num_outputs": 5.0
             },
-            "createdAt": 1524854276.0,
+            "createdAt": 1557168633.0,
             "eventTimes": {
-                "completeTime": 1524854353.0,
-                "createTime": 1524854276.0,
-                "firstProgressingTime": 1524854276.0,
-                "lastProgressingTime": 1524854353.0,
-                "lastStatusTime": 1524854353.0,
-                "lastTime": 1524854353.0
+                "completeTime": 1557168670.0,
+                "createTime": 1557168633.0,
+                "firstProgressingTime": 1557168633.0,
+                "lastProgressingTime": 1557168670.0,
+                "lastStatusTime": 1557168670.0,
+                "lastTime": 1557168670.0
             },
             "filters": {
-                "jobId": "1524854276176-osxgul",
+                "application": "emc-watchfolder",
+                "input": "s3://emc-watchfolder-watchfolder-1v41f1j54lmg2/inputs/01_llama_drama_1080p.mp4",
+                "jobId": "1557168633072-vyhshn",
                 "queueName": "Default",
-                "region": "us-east-1"
+                "region": "us-east-1",
+                "settings": "Default",
+                "workflow": "Default"
             },
-            "id": "1524854276176-osxgul",
+            "id": "1557168633072-vyhshn",
             "progressMetrics": {
-                "decodeRate": 93.8961038961039,
+                "decodeRate": 58.37837837837838,
                 "estDecodeTimeRemaining": 0.0,
-                "frameCount": 7230.0,
-                "framesDecoded": 7230.0,
+                "frameCount": 2160.0,
+                "framesDecoded": 2160.0,
                 "framesRemaining": 0.0,
                 "percentDecodeComplete": 100.0,
-                "progressingDuration": 77.0,
+                "percentJobComplete": 100.0,
+                "progressingDuration": 37.0,
                 "queuedDuration": 0.0,
-                "statusDuration": 77.0
+                "statusDuration": 37.0
             },
             "status": "COMPLETE"
         }
     ]
-
     ```
 ## Cleaning Up the Stack Resources
 
@@ -291,7 +312,7 @@ The following sections explain all of the resources created by the CloudFormatio
 
 ### Chalice API (API Gateway and Lambda function)
 
-- **jobs API** A sample API implemented using Chalice, an AWS Serverless API framework, is provided.  Chalice lets you define API endpoints and lambda handler code in one python file.  It generates the AWS resources needed to support your code when you deploy your Chalice project.  It's super easy to use and great for getting your APIs up and running quickly.  Chalice will create a lambda function and API Gateway stages. The Chalice API is created separately from the stack, but takes stack resources as inputs.
+- **jobs API**  - A sample API implemented using Chalice, an AWS Serverless API framework, is provided.  Chalice lets you define API endpoints and lambda handler code in one python file.  It generates the AWS resources needed to support your code when you deploy your Chalice project.  It's super easy to use and great for getting your APIs up and running quickly.  Chalice will create a lambda function and API Gateway stages. The Chalice API is created separately from the stack, but takes stack resources as inputs.
 
 ### CloudWatch Events
 
@@ -358,6 +379,8 @@ Job Analysis:
 Job Metrics:
 * most recent timestamp seen
 * job status in [SUBMITTED, PROGRESSING, COMPLETE, ERROR]
+* job in progress phase in [PROBING, TRANSCODING, UPLOADING]
+* percent of job completed
 * number of frames decoded
 * speed of decoding in FPS
 * percent complete of frames decoded
@@ -389,7 +412,7 @@ This section contains information about how to customize this stack.
 
 ## Filtering the events that progress metrics are collected for
 
-The workflow is setup to collect metrics for any MediaConvert workload running in your region.  You could modify the CloudWatch event filter to limit metric collection using any of the event filters discussed in the **Data** section.  For example, to filter for only the events emited by the application called _Foo_ we could modify the CloudWatch events rule in [pipeline-base.yaml](./collector-mediaconvert-events/pipeline-base.yaml), _AllMediaConvertEventRule_, from this:
+The workflow is setup to collect metrics for any MediaConvert workload running in your region.  You could modify the CloudWatch event filter to limit metric collection using any of the event filters discussed in the **Data** section.  For example, to filter for only the events emited by the application called _Foo_ we could modify the CloudWatch events rule in [pipeline-base.yaml](pipeline-base/pipeline-base.yaml), _AllMediaConvertEventRule_, from this:
 
         EventPattern: 
             source: 
@@ -432,7 +455,7 @@ If you want to modify this lambda code in this stack you'll need to generate you
     ```
 
 3. Upload the lambda package to an S3 bucket located in the region you want to deploy to.
-4. Edit the following lines in [pipeline-base.yaml](pipeline-base.yaml) to point to the S3Bucket and KeyPrefix you used to upload lambda.zip.
+4. Edit the following lines in [pipeline-base.yaml](pipeline-base/pipeline-base.yaml) to point to the S3Bucket and KeyPrefix you used to upload lambda.zip.
 
     ```
     Mappings:

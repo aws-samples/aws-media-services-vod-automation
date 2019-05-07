@@ -149,6 +149,7 @@ def putStatusMetrics(job, timestamp, status, METRICSTREAM):
     #if 'eventStatus' not in job:
     #    return
 
+    #for s in ['SUBMITTED', 'PROGRESSING', 'PROBING', 'TRANSCODING', 'UPLOADING', 'ERROR', 'COMPLETE']:
     for s in ['SUBMITTED', 'PROGRESSING', 'ERROR', 'COMPLETE']:
         if status == s:
             putJobMetric(job, timestamp, s, 1, METRICSTREAM)
@@ -287,12 +288,12 @@ def calculateProgressMetrics(job):
     # CALCULATED METRICS
 
     # percentDecodeComplete = framesDecoded / frameCount * 100 
-    # framesRemainging = frameCount - framesDecoded
+    # framesRemaining = frameCount - framesDecoded
     if 'framesDecoded' in progressMetrics:
         if 'analysis' in job and 'frameCount' in job['analysis']:
-            
-            progressMetrics['percentDecodeComplete'] \
-                = job['progressMetrics']['framesDecoded'] / job['analysis']['frameCount'] * 100
+
+            # progressMetrics['percentDecodeComplete'] \
+            #     = job['progressMetrics']['framesDecoded'] / job['analysis']['frameCount'] * 100
 
             progressMetrics['framesRemaining'] \
                 = job['analysis']['frameCount'] - job['progressMetrics']['framesDecoded']
@@ -431,28 +432,38 @@ def jobStateChangeEvent(event, JOBTABLE):
         if tsevent > job['eventTimes']['lastTime']:
             job['eventTimes']['lastTime'] = tsevent   
 
-    if event['detail']['status'] == 'STATUS_UPDATE':    
-    
-        job['eventStatus'] = 'PROGRESSING'
-        # framesDecoded = most recent STATUS event frames decoded or frame count if COMPLETE event
-        if 'framesDecoded' not in job['progressMetrics'] \
-                or event['detail']['framesDecoded'] > job['progressMetrics']['framesDecoded']: 
-            job['progressMetrics']['framesDecoded'] = event['detail']['framesDecoded']
-        
-        # lastStatusTime = timestamp of latest status update or COMPLETE event
-        if 'lastStatusTime' not in job['eventTimes'] or tsevent >  job['eventTimes']['lastStatusTime']:
-            job['eventTimes']['lastStatusTime'] = tsevent
+    if event['detail']['status'] == 'STATUS_UPDATE':
+        #in case a status_update comes in after a complete event already happened
+        if job['eventStatus'] != 'COMPLETE' or job['status'] != 'COMPLETE': 
+            job['eventStatus'] = 'PROGRESSING'
+            # framesDecoded = most recent STATUS event frames decoded or frame count if COMPLETE event
+            if 'framesDecoded' not in job['progressMetrics'] \
+                    or event['detail']['framesDecoded'] > job['progressMetrics']['framesDecoded']: 
+                job['progressMetrics']['framesDecoded'] = event['detail']['framesDecoded']
+            
+            # lastStatusTime = timestamp of latest status update or COMPLETE event
+            if 'lastStatusTime' not in job['eventTimes'] or tsevent >  job['eventTimes']['lastStatusTime']:
+                job['eventTimes']['lastStatusTime'] = tsevent
 
-        job['progressMetrics'] = calculateProgressMetrics(job)
-        #putProgressMetrics(job, job['eventTimes']['lastTime'])
+            job['progressMetrics'] = calculateProgressMetrics(job)
+            #putProgressMetrics(job, job['eventTimes']['lastTime'])
 
-        # progress is measured based on decoding time.  save the duration of decode so
-        # we can use it to come up with a formula to pad the time for tail of job
-        # after decdoe is complete.
-        if 'percentDecodeComplete' in job['progressMetrics'] and job['progressMetrics']['percentDecodeComplete'] == 100:
-            if 'decodeTime' not in job['eventTimes']:
-                    job['eventTimes']['decodeTime'] = tsevent
-        
+            # 
+            job['progressMetrics'] ['percentJobComplete'] = event['detail']['jobProgress']['jobPercentComplete']
+            # capture actual phase that the job is in, instead of generic "progressing"
+            job['progressMetrics'] ['phase']= event['detail']['jobProgress']['currentPhase']
+
+            # instead of calculating our own, use the provided percentage in the jobProgress info
+            if job['progressMetrics'] ['phase'] == 'TRANSCODING':
+                job['progressMetrics']['percentDecodeComplete'] =  event['detail']['jobProgress']['phaseProgress']['TRANSCODING']['percentComplete']
+                
+            # progress is measured based on decoding time.  save the duration of decode so
+            # we can use it to come up with a formula to pad the time for tail of job
+            # after decdoe is complete.
+            if 'percentDecodeComplete' in job['progressMetrics'] and job['progressMetrics']['percentDecodeComplete'] == 100:
+                if 'decodeTime' not in job['eventTimes']:
+                        job['eventTimes']['decodeTime'] = tsevent
+                        
     elif event['detail']['status'] == 'PROGRESSING':
         
         job['eventStatus'] = 'PROGRESSING'
@@ -505,6 +516,11 @@ def jobStateChangeEvent(event, JOBTABLE):
             job['progressMetrics']['framesDecoded'] = job['analysis']['frameCount']
 
         job['progressMetrics'] = calculateProgressMetrics(job)
+        job['progressMetrics']['percentDecodeComplete'] = 100
+        job['progressMetrics'] ['percentJobComplete'] = 100
+        # this is no longer relevant after a job completes so we get rid of the key
+        if 'phase' in job['progressMetrics']:
+            del job['progressMetrics']['phase']   
 
     elif event['detail']['status'] == 'ERROR':
 
@@ -556,7 +572,7 @@ def lambda_handler(event, context):
         EVENTTABLETTL = os.environ['EventTableTTL']
         EVENTSTREAM = os.environ['EventStream']
         METRICSTREAM = os.environ['MetricStream']
-        USESTREAMS = os.environ['UseStreams']
+        #USESTREAMS = os.environ['UseStreams']
         
         JOB_RETENTION_PERIOD = (3600 * 24 * int(JOBTABLETTL))
         EVENT_RETENTION_PERIOD = (3600 * 24 * int(EVENTTABLETTL))
@@ -578,7 +594,7 @@ def lambda_handler(event, context):
         response = table.put_item(Item = job)
         print(json.dumps(response, cls=DecimalEncoder))
 
-        # add expirtation timestamp for dynamo and save the event in dynamo
+        # add expiration timestamp for dynamo and save the event in dynamo
         event["timestamp"] = tsevent
         event["testTime"] = tsevent
         event["timestampTTL"] = tsevent + EVENT_RETENTION_PERIOD
