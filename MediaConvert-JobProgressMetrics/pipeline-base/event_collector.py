@@ -446,17 +446,19 @@ def jobStateChangeEvent(event, JOBTABLE):
                 job['eventTimes']['lastStatusTime'] = tsevent
 
             job['progressMetrics'] = calculateProgressMetrics(job)
-            #putProgressMetrics(job, job['eventTimes']['lastTime'])
 
-            # 
             job['progressMetrics'] ['percentJobComplete'] = event['detail']['jobProgress']['jobPercentComplete']
             # capture actual phase that the job is in, instead of generic "progressing"
-            job['progressMetrics'] ['phase']= event['detail']['jobProgress']['currentPhase']
+            curPhase = event['detail']['jobProgress']['currentPhase']
+            job['progressMetrics'] ['currentPhase']= curPhase
+            job['progressMetrics'] ['currentPhasePercentComplete'] = event['detail']['jobProgress']['phaseProgress'][curPhase]['percentComplete']
 
             # instead of calculating our own, use the provided percentage in the jobProgress info
-            if job['progressMetrics'] ['phase'] == 'TRANSCODING':
+            # probably don't need this since this is captured in currentPhasePercentComplete
+
+            if job['progressMetrics'] ['currentPhase'] == 'TRANSCODING':
                 job['progressMetrics']['percentDecodeComplete'] =  event['detail']['jobProgress']['phaseProgress']['TRANSCODING']['percentComplete']
-                
+            
             # progress is measured based on decoding time.  save the duration of decode so
             # we can use it to come up with a formula to pad the time for tail of job
             # after decdoe is complete.
@@ -519,8 +521,8 @@ def jobStateChangeEvent(event, JOBTABLE):
         job['progressMetrics']['percentDecodeComplete'] = 100
         job['progressMetrics'] ['percentJobComplete'] = 100
         # this is no longer relevant after a job completes so we get rid of the key
-        if 'phase' in job['progressMetrics']:
-            del job['progressMetrics']['phase']   
+        if 'currentPhase' in job['progressMetrics']:
+            del job['progressMetrics']['currentPhase']   
 
     elif event['detail']['status'] == 'ERROR':
 

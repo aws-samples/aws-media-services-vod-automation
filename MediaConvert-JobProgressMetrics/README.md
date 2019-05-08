@@ -127,7 +127,7 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
 2. List jobs by id
 
     ```
-    http GET  https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/api/progress/job/1524854276176-osxgul
+    http GET  https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/api/progress/job/1557269195888-jfv1i5
     ```
 
     Output:
@@ -154,39 +154,31 @@ This project uses Chalice to build APIs.  Chalice is great for creating APIs wit
             "num_inputs": 1.0,
             "num_outputs": 5.0
         },
-        "createdAt": 1557168772.0,
+        "createdAt": 1557269195.0,
         "eventTimes": {
-            "createTime": 1557168772.0,
-            "firstProgressingTime": 1557168772.0,
-            "lastProgressingTime": 1557168775.0,
-            "lastStatusTime": 1557169015.0,
-            "lastTime": 1557169015.0
+            "createTime": 1557269195.0,
+            "firstProgressingTime": 1557269195.0,
+            "lastProgressingTime": 1557269199.0,
+            "lastStatusTime": 1557269349.0,
+            "lastTime": 1557269349.0
         },
-        "filters": {
-            "application": "emc-watchfolder",
-            "input": "s3://emc-watchfolder-1v41f1j54lmg2/inputs/test.mp4",
-            "jobId": "1557168772645-644a8h",
-            "queueName": "Default",
-            "region": "us-east-1",
-            "settings": "Default",
-            "workflow": "Test"
-        },
-        "id": "1557168772645-644a8h",
+        "id": "1557269195888-jfv1i5",
         "progressMetrics": {
-            "decodeRate": 69.58024691358025,
-            "estDecodeTimeRemaining": 30.583392476933994,
+            "currentPhase": "TRANSCODING",
+            "currentPhasePercentComplete": 56.0,
+            "decodeRate": 69.38311688311688,
+            "estDecodeTimeRemaining": 120.36069255966308,
             "frameCount": 19036.0,
-            "framesDecoded": 16908.0,
-            "framesRemaining": 2128.0,
-            "percentDecodeComplete": 89.0,
-            "percentJobComplete": 81.0,
-            "phase": "TRANSCODING",
-            "progressingDuration": 3.0,
+            "framesDecoded": 10685.0,
+            "framesRemaining": 8351.0,
+            "percentJobComplete": 53.0,
+            "progressingDuration": 4.0,
             "queuedDuration": 0.0,
-            "statusDuration": 243.0
+            "statusDuration": 154.0
         },
         "status": "PROGRESSING"
     }
+
     ```
 
 3. List jobs with COMPLETE status.   
@@ -380,13 +372,13 @@ Job Metrics:
 * most recent timestamp seen
 * job status in [SUBMITTED, PROGRESSING, COMPLETE, ERROR]
 * job in progress phase in [PROBING, TRANSCODING, UPLOADING]
-* percent of job completed
+* job in progress phase percent completed
 * number of frames decoded
 * speed of decoding in FPS
-* percent complete of frames decoded
 * estimated time remaining for decoding
 * standby duration (duration in SUBMITTED status)
 * PROGRESSING duration 
+* percent of job completed
 
 ## Filters
 
