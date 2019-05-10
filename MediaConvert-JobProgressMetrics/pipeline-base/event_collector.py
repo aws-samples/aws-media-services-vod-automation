@@ -529,27 +529,21 @@ def jobStateChangeEvent(event, JOBTABLE):
         if 'currentPhase' in job['progressMetrics']:
             del job['progressMetrics']['currentPhase']   
 
-    elif event['detail']['status'] == 'ERROR':
-        job['eventStatus'] = 'ERROR'
-        job['status'] = 'ERROR'
+    elif event['detail']['status'] == 'ERROR' or event['detail']['status'] == 'CANCELED':
+
+        job['eventStatus'] = event['detail']['status']
+        job['status'] = event['detail']['status']
         
         # lastTime = latest timestamp seen so far
         job['eventTimes']['lastTime'] = tsevent
-
-        # completeTime = timestamp of COMPLETE event
         job['eventTimes']['errorTime'] = tsevent
 
-        job['progressMetrics'] = calculateProgressMetrics(job)
+        if job['status'] == 'ERROR':
+            job['progressMetrics'] = calculateProgressMetrics(job)
     
-    elif event['detail']['status'] == 'CANCELED':
-        job['eventStatus'] = 'CANCELED'
-        job['status'] = 'CANCELED'
-
-        # lastTime = latest timestamp seen so far
-        job['eventTimes']['lastTime'] = tsevent
-
-        # completeTime = timestamp of COMPLETE event
-        job['eventTimes']['errorTime'] = tsevent
+        # if we saw an error/canceled event before we created the job, put in a createdAt time
+        if 'createdAt' not in job:
+            job['createdAt'] = int(int(event['detail']['timestamp'])/1000)
 
     return job
 
