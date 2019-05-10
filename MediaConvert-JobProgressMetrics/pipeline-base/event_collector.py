@@ -149,8 +149,7 @@ def putStatusMetrics(job, timestamp, status, METRICSTREAM):
     #if 'eventStatus' not in job:
     #    return
 
-    #for s in ['SUBMITTED', 'PROGRESSING', 'PROBING', 'TRANSCODING', 'UPLOADING', 'ERROR', 'COMPLETE']:
-    for s in ['SUBMITTED', 'PROGRESSING', 'ERROR', 'COMPLETE']:
+    for s in ['SUBMITTED', 'PROGRESSING', 'ERROR', 'COMPLETE', 'CANCELED']:
         if status == s:
             putJobMetric(job, timestamp, s, 1, METRICSTREAM)
         else:
@@ -341,11 +340,11 @@ def jobCreateEvent(event, JOBTABLE):
     tsevent = job['createdAt']
     job['queueName'] = job['queue'].split('/')[1]
     job['filters'] = getJobMetricDimensions(job)['filters']
-
+    
     # analyze inputs
     jobMediaInfo(job)                   # Adds mediainfo to job
     jobAnalyzeInputs(job)               # Adds analysis to job
-  
+
     storedJob = getMediaConvertJob(job['id'], JOBTABLE)
 
     # if we recieved any events out of order, we need to merge them in to the base job
@@ -358,8 +357,7 @@ def jobCreateEvent(event, JOBTABLE):
         job['eventTimes']['lastTime'] = tsevent
         job['eventTimes']['createTime'] = tsevent
     
-    else:
-        
+    else:        
         # save previously recorded event times
         job['eventTimes'] = storedJob['eventTimes']
         
@@ -373,9 +371,14 @@ def jobCreateEvent(event, JOBTABLE):
         # merge job status
         if 'status' in storedJob:
             job['status'] = storedJob['status']
+
+        # merge event status 
+        if 'eventStatus' in storedJob:    
+            job['eventStatus'] = storedJob['eventStatus']
         
         if 'progressMetrics' not in job:
             job['progressMetrics'] = {}
+            job['progressMetrics'] ['percentJobComplete'] = 0
 
         # if the job completed but we didn't have a framecount from the CREATE event, set it now
         if job['status'] == 'COMPLETE':
@@ -383,16 +386,18 @@ def jobCreateEvent(event, JOBTABLE):
             
         # merge in input details from stored job
         if 'inputDetails' in storedJob:
-            job['inputDetails'] = storedJob['inputDetails'] 
-    
+            job['inputDetails'] = storedJob['inputDetails']         
 
     # New jobs that are not queued start in PROGRESSING status
     if job['status'] == 'PROGRESSING':
         job['eventTimes']['firstProgressingTime'] = tsevent
 
-    # calculate progress metrics
-    job['progressMetrics'] = calculateProgressMetrics(job)
-
+    # no need to calculate metrics if the job has already been canceled; let's retain the info that was there before canceling
+    if job['status'] != 'CANCELED':
+        job['progressMetrics'] = storedJob['progressMetrics']
+    # otherwise, calculate metrics
+    else:
+        job['progressMetrics'] = calculateProgressMetrics(job)
     return job
 
 def jobStateChangeEvent(event, JOBTABLE):
@@ -525,7 +530,6 @@ def jobStateChangeEvent(event, JOBTABLE):
             del job['progressMetrics']['currentPhase']   
 
     elif event['detail']['status'] == 'ERROR':
-
         job['eventStatus'] = 'ERROR'
         job['status'] = 'ERROR'
         
@@ -537,6 +541,16 @@ def jobStateChangeEvent(event, JOBTABLE):
 
         job['progressMetrics'] = calculateProgressMetrics(job)
     
+    elif event['detail']['status'] == 'CANCELED':
+        job['eventStatus'] = 'CANCELED'
+        job['status'] = 'CANCELED'
+
+        # lastTime = latest timestamp seen so far
+        job['eventTimes']['lastTime'] = tsevent
+
+        # completeTime = timestamp of COMPLETE event
+        job['eventTimes']['errorTime'] = tsevent
+
     return job
 
 def lambda_handler(event, context): 

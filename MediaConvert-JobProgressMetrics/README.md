@@ -47,7 +47,7 @@ To get started right away just launch the stack using one of the buttons below.
 Region| Launch
 ------|-----
 us-east-1 (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-east-1/vodtk/2-mediaconvert-job-progress-metrics/pipeline-base/pipeline-base.yaml)
-us-west-2 (Oregon) | [![Launch in us-west-2](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-west-2/vodtk/2-mediaconvert-job-progress-metrics/pipeline-base/pipeline-base.yaml)
+us-west-2 (Oregon) | [![Launch in us-west-2](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-west-2/vodtk/2-mediaconvert-job-progress-metrics/pipeline-base/pipeline-base.yaml)
 
 
 ## Build the progress API
@@ -370,7 +370,7 @@ Job Analysis:
 
 Job Metrics:
 * most recent timestamp seen
-* job status in [SUBMITTED, PROGRESSING, COMPLETE, ERROR]
+* job status in [SUBMITTED, PROGRESSING, COMPLETE, ERROR, CANCELED]
 * job in progress phase in [PROBING, TRANSCODING, UPLOADING]
 * job in progress phase percent completed
 * number of frames decoded
