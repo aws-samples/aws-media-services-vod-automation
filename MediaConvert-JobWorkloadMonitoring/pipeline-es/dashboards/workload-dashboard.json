@@ -1,103 +1,103 @@
 [
-    {
-      "_id": "6037aa50-4ce6-11e8-b9a5-055667df0bb6",
-      "_type": "dashboard",
-      "_source": {
-        "title": "MediaConvert Workload (last 1 hour)",
-        "hits": 0,
-        "description": "",
-        "panelsJSON": "[{\"col\":1,\"id\":\"cb9fc4a0-4ce4-11e8-b9a5-055667df0bb6\",\"panelIndex\":1,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":4,\"id\":\"02cf4fd0-4ce6-11e8-b9a5-055667df0bb6\",\"panelIndex\":2,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":7,\"id\":\"f6fc3060-4d5d-11e8-b9a5-055667df0bb6\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":10,\"id\":\"d3737070-4d5f-11e8-b9a5-055667df0bb6\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":1,\"id\":\"474ecb00-4d62-11e8-b9a5-055667df0bb6\",\"panelIndex\":5,\"row\":7,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"}]",
-        "optionsJSON": "{\"darkTheme\":false}",
-        "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-5\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}},\"P-3\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}}",
-        "version": 1,
-        "timeRestore": false,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"filter\":[{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
-        }
-      }
-    },
-    {
-      "_id": "02cf4fd0-4ce6-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Average Standby Time by Queue",
-        "visState": "{\"title\":\"Average Standby Time by Queue\",\"type\":\"line\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"eventTimes.lastTime per minute\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Standby Time\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"stacked\",\"data\":{\"label\":\"Standby Time\",\"id\":\"1\"},\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"linear\",\"valueAxis\":\"ValueAxis-1\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.queuedDuration\",\"customLabel\":\"Standby Time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"eventTimes.lastTime\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
-        "uiStateJSON": "{}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"meta\":{\"index\":\"jobindex-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"status.keyword\",\"value\":\"PROGRESSING\"},\"query\":{\"match\":{\"status.keyword\":{\"query\":\"PROGRESSING\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
-        }
-      }
-    },
-    {
-      "_id": "d3737070-4d5f-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Job count by userMetadata:workflow",
-        "visState": "{\"title\":\"Job count by userMetadata:workflow\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"COMPLETE or ERROR Jobs\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"workflow.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"userMetadata: workflow\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"status.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"status\"}}],\"listeners\":{}}",
-        "uiStateJSON": "{\"vis\":{\"colors\":{\"news\":\"#EAB839\",\"COMPLETE\":\"#7EB26D\"},\"legendOpen\":false}}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"meta\":{\"index\":\"jobindex-*\",\"type\":\"phrases\",\"key\":\"status.keyword\",\"value\":\"COMPLETE, ERROR\",\"params\":[\"COMPLETE\",\"ERROR\"],\"negate\":false,\"disabled\":false,\"alias\":\"status\"},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"status.keyword\":\"COMPLETE\"}},{\"match_phrase\":{\"status.keyword\":\"ERROR\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}]}"
-        }
-      }
-    },
-    {
-      "_id": "f6fc3060-4d5d-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Avg Decode Rate by Queue",
-        "visState": "{\"title\":\"Avg Decode Rate by Queue\",\"type\":\"metric\",\"params\":{\"addLegend\":false,\"addTooltip\":true,\"gauge\":{\"autoExtend\":false,\"backStyle\":\"Full\",\"colorSchema\":\"Green to Red\",\"colorsRange\":[{\"from\":0,\"to\":100}],\"gaugeColorMode\":\"None\",\"gaugeStyle\":\"Full\",\"gaugeType\":\"Metric\",\"invertColors\":false,\"labels\":{\"color\":\"black\",\"show\":true},\"orientation\":\"vertical\",\"percentageMode\":false,\"scale\":{\"color\":\"#333\",\"labels\":false,\"show\":false,\"width\":2},\"style\":{\"bgColor\":false,\"fontSize\":\"20\",\"labelColor\":false,\"subText\":\"\"},\"type\":\"simple\",\"useRange\":false,\"verticalSplit\":true},\"type\":\"gauge\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.decodeRate\",\"customLabel\":\"Avg Decode Rate\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\"}}],\"listeners\":{}}",
-        "uiStateJSON": "{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
-        }
-      }
-    },
-    {
-      "_id": "58e6a180-4d67-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Progressing Jobs by Queue",
-        "visState": "{\"title\":\"Progressing Jobs by Queue\",\"type\":\"histogram\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"eventTimes.lastTime per minute\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Job count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Job count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"Job count\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"eventTimes.lastTime\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
-        "uiStateJSON": "{}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
-        }
-      }
-    },
-    {
-      "_id": "cb9fc4a0-4ce4-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Active Jobs by Queue",
-        "visState": "{\"title\":\"Active Jobs by Queue\",\"type\":\"histogram\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"Timestamp per 30 seconds\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Job Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Job Count\",\"id\":\"1\"},\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"linear\",\"valueAxis\":\"ValueAxis-1\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"Job Count\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"filters.queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"Timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
-        "uiStateJSON": "{\"spy\":{\"mode\":{\"name\":null,\"fill\":false}}}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"metricindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"metricindex-*\",\"key\":\"MetricName\",\"negate\":false,\"type\":\"phrase\",\"value\":\"PROGRESSING\"},\"query\":{\"match\":{\"MetricName\":{\"query\":\"PROGRESSING\",\"type\":\"phrase\"}}}},{\"meta\":{\"index\":\"metricindex-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"Value\",\"value\":\"1\"},\"query\":{\"match\":{\"Value\":{\"query\":1,\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
-        }
-      }
-    },
-    {
-      "_id": "474ecb00-4d62-11e8-b9a5-055667df0bb6",
-      "_type": "visualization",
-      "_source": {
-        "title": "Job Detail",
-        "visState": "{\"title\":\"Job Detail\",\"type\":\"table\",\"params\":{\"perPage\":5,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.queueName.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"progressMetrics.estDecodeTimeRemaining\",\"sortOrder\":\"asc\",\"customLabel\":\"Queue Name\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"filters.jobId.keyword\",\"size\":100,\"order\":\"desc\",\"orderBy\":\"4\",\"customLabel\":\"Job id\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"userMetadata.workflow.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"progressMetrics.estDecodeTimeRemaining\",\"sortOrder\":\"asc\",\"customLabel\":\"userMetadata: workflow\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"min\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.estDecodeTimeRemaining\",\"customLabel\":\"Est. Decode TIme Remaining\"}},{\"id\":\"5\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.frameCount\",\"customLabel\":\"total frames\"}},{\"id\":\"6\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.framesDecoded\",\"customLabel\":\"frames decoded\"}},{\"id\":\"7\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.percentDecodeComplete\",\"customLabel\":\"percent decoded\"}},{\"id\":\"8\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.statusDuration\",\"customLabel\":\"progressing time (s)\"}},{\"id\":\"9\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.decodeRate\",\"customLabel\":\"avg decode rate (FPS)\"}},{\"id\":\"10\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"analysis.num_inputs\",\"customLabel\":\"inputs (count)\"}},{\"id\":\"11\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"analysis.num_outputs\",\"customLabel\":\"outputs (count)\"}},{\"id\":\"12\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"status.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"progressMetrics.estDecodeTimeRemaining\",\"sortOrder\":\"asc\",\"customLabel\":\"status\"}}],\"listeners\":{}}",
-        "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
-        "description": "",
-        "version": 1,
-        "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"meta\":{\"index\":\"jobindex-*\",\"negate\":true,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"status.keyword\",\"value\":\"SUBMITTED\"},\"query\":{\"match\":{\"status.keyword\":{\"query\":\"SUBMITTED\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"index\":\"jobindex-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"exists\",\"key\":\"progressMetrics.percentDecodeComplete\",\"value\":\"exists\"},\"exists\":{\"field\":\"progressMetrics.percentDecodeComplete\"},\"$state\":{\"store\":\"appState\"}}]}"
-        }
+  {
+    "_id": "0dc4d480-8301-11e9-8a78-15e81a78c6d8",
+    "_type": "dashboard",
+    "_source": {
+      "title": "MediaConvert Workload (last 1 hour)",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"cb9fc4a0-4ce4-11e8-b9a5-055667df0bb6\",\"panelIndex\":1,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":5,\"id\":\"f6fc3060-4d5d-11e8-b9a5-055667df0bb6\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":9,\"id\":\"d3737070-4d5f-11e8-b9a5-055667df0bb6\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":6,\"type\":\"visualization\"},{\"col\":1,\"id\":\"c2b57dd0-7e48-11e9-92fc-67b050dafa6a\",\"panelIndex\":5,\"row\":7,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"},\"legendOpen\":true}},\"P-5\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":0,\"direction\":\"desc\"}}}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
       }
     }
-  ]
+  },
+  {
+    "_id": "58e6a180-4d67-11e8-b9a5-055667df0bb6",
+    "_type": "visualization",
+    "_source": {
+      "title": "Progressing Jobs by Queue",
+      "visState": "{\"title\":\"Progressing Jobs by Queue\",\"type\":\"histogram\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"eventTimes.lastTime per minute\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Job count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Job count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"Job count\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"eventTimes.lastTime\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "02cf4fd0-4ce6-11e8-b9a5-055667df0bb6",
+    "_type": "visualization",
+    "_source": {
+      "title": "Average Standby Time by Queue",
+      "visState": "{\"title\":\"Average Standby Time by Queue\",\"type\":\"line\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"eventTimes.lastTime per minute\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Standby Time\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"stacked\",\"data\":{\"label\":\"Standby Time\",\"id\":\"1\"},\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"linear\",\"valueAxis\":\"ValueAxis-1\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.queuedDuration\",\"customLabel\":\"Standby Time\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"eventTimes.lastTime\",\"interval\":\"m\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"meta\":{\"index\":\"jobindex-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"status.keyword\",\"value\":\"PROGRESSING\"},\"query\":{\"match\":{\"status.keyword\":{\"query\":\"PROGRESSING\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
+      }
+    }
+  },
+  {
+    "_id": "cb9fc4a0-4ce4-11e8-b9a5-055667df0bb6",
+    "_type": "visualization",
+    "_source": {
+      "title": "Active Jobs by Queue",
+      "visState": "{\"title\":\"Active Jobs by Queue\",\"type\":\"histogram\",\"params\":{\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{\"text\":\"Timestamp per 30 seconds\"}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Job Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Job Count\",\"id\":\"1\"},\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"linear\",\"valueAxis\":\"ValueAxis-1\"}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"Job Count\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"filters.queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"Timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"spy\":{\"mode\":{\"name\":null,\"fill\":false}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"metricindex-*\",\"query\":{\"match_all\":{}},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"metricindex-*\",\"key\":\"MetricName\",\"negate\":false,\"type\":\"phrase\",\"value\":\"PROGRESSING\"},\"query\":{\"match\":{\"MetricName\":{\"query\":\"PROGRESSING\",\"type\":\"phrase\"}}}},{\"meta\":{\"index\":\"metricindex-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"Value\",\"value\":\"1\"},\"query\":{\"match\":{\"Value\":{\"query\":1,\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
+      }
+    }
+  },
+  {
+    "_id": "c2b57dd0-7e48-11e9-92fc-67b050dafa6a",
+    "_type": "visualization",
+    "_source": {
+      "title": "Job Detail by ID",
+      "visState": "{\"title\":\"Job Detail by ID\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showMeticsAtAllLevels\":false,\"showPartialRows\":false,\"showTotal\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"filters.jobId.keyword\",\"size\":100,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Job ID\"}},{\"id\":\"5\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"queueName.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"queueName.keyword\",\"sortOrder\":\"desc\",\"customLabel\":\"Queue Name\"}},{\"id\":\"6\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"workflow.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"workflow.keyword\",\"sortOrder\":\"desc\",\"customLabel\":\"Workflow\"}},{\"id\":\"8\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.frameCount\",\"customLabel\":\"Frame Count\"}},{\"id\":\"13\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.framesDecoded\",\"customLabel\":\"Frames Decoded\"}},{\"id\":\"14\",\"enabled\":true,\"type\":\"min\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.framesRemaining\",\"customLabel\":\"Frames Remaining\"}},{\"id\":\"1\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"status.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"eventTimes.lastTime\",\"sortOrder\":\"desc\",\"customLabel\":\"Job Status\"}},{\"id\":\"11\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.statusDuration\",\"customLabel\":\"Progressing Time(s)\"}},{\"id\":\"12\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.percentJobComplete\",\"customLabel\":\"Job Percent Complete\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.currentPhase.keyword\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"eventTimes.lastTime\",\"sortOrder\":\"desc\",\"customLabel\":\"Last Seen Job Phase\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.currentPhasePercentComplete\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"eventTimes.lastTime\",\"sortOrder\":\"desc\",\"customLabel\":\"Last Seen Job Phase Percent Complete\"}},{\"id\":\"9\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.percentDecodeComplete\",\"customLabel\":\"Percent Decode Complete\"}},{\"id\":\"7\",\"enabled\":true,\"type\":\"min\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.estDecodeTimeRemaining\",\"customLabel\":\"Estimated Decode Time Remaining\"}},{\"id\":\"10\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.decodeRate\",\"customLabel\":\"Average Decode Rate (FPS)\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":0,\"direction\":\"desc\"}}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "d3737070-4d5f-11e8-b9a5-055667df0bb6",
+    "_type": "visualization",
+    "_source": {
+      "title": "Job count by workflow",
+      "visState": "{\"title\":\"Job count by workflow\",\"type\":\"pie\",\"params\":{\"addLegend\":true,\"addTooltip\":true,\"isDonut\":false,\"legendPosition\":\"right\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"filters.jobId.keyword\",\"customLabel\":\"Count\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\",\"row\":true}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"userMetadata.workflow.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Workflow\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"status.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Status\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"COMPLETE\":\"#7EB26D\",\"news\":\"#EAB839\"},\"legendOpen\":false}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "f6fc3060-4d5d-11e8-b9a5-055667df0bb6",
+    "_type": "visualization",
+    "_source": {
+      "title": "Avg Decode Rate by Queue",
+      "visState": "{\"title\":\"Avg Decode Rate by Queue\",\"type\":\"metric\",\"params\":{\"addLegend\":false,\"addTooltip\":true,\"gauge\":{\"autoExtend\":false,\"backStyle\":\"Full\",\"colorSchema\":\"Green to Red\",\"colorsRange\":[{\"from\":0,\"to\":100}],\"gaugeColorMode\":\"None\",\"gaugeStyle\":\"Full\",\"gaugeType\":\"Metric\",\"invertColors\":false,\"labels\":{\"color\":\"black\",\"show\":true},\"orientation\":\"vertical\",\"percentageMode\":false,\"scale\":{\"color\":\"#333\",\"labels\":false,\"show\":false,\"width\":2},\"style\":{\"bgColor\":false,\"fontSize\":\"20\",\"labelColor\":false,\"subText\":\"\"},\"type\":\"simple\",\"useRange\":false,\"verticalSplit\":true},\"type\":\"gauge\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"progressMetrics.decodeRate\",\"customLabel\":\"Avg Decode Rate\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"queueName.keyword\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Queue\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jobindex-*\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+      }
+    }
+  }
+]

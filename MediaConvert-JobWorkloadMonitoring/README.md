@@ -7,7 +7,7 @@ Observability is key to effectivily operating any workflow on AWS.  Workload mon
 
 In this architecture, we set up a data pipeline where the [MediaConvert Job Progress Metrics](../MediaConvert-JobProgressMetrics/README.md) stack from the previous module is the _producer_ and the Elasticsearch stack is the _consumer_.
 
-Once the stack is in place we can use the provided dashboard to visulualize the MediaConvert workload for a specific region.
+Once the stack is in place we can use the provided dashboard to visualize the MediaConvert workload for a specific region.
 
 The dashboard is a just an example with what can be done with this data.  Use Kibana to explore the data and experiment to provide information that is useful to you.
 
@@ -28,7 +28,7 @@ This sample uses AWS services that do not provide a free tier.  These include Ki
 
 # Running the example
 
-## Prerequisite
+## Prerequisites
 
 1. You'll need to deploy the the progress monitoring stack in [MediaConvert-JobProgressMetrics](../MediaConvert-JobProgressMetrics/README.md) that will be the producer of the data in our pipeline.  You will not need the progress REST API, so you can skip that step if you want.
 
@@ -38,7 +38,7 @@ This sample uses AWS services that do not provide a free tier.  These include Ki
 
 The MediaConvert job data exposed in this stack includes the account id it is running in. 
 
-The stack uses an [ip-based policy](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip) to grant access to Elaticsearch resources.  This grants access to the Elasticsearch APIs and Kibana, but only through the IP you provide to the stack when it is deployed.  See the the **ESDomain** logical resource in [pipeline-es.yaml](./pipeline-es.yaml) to view the policy. 
+The stack uses an [ip-based policy](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip) to grant access to Elaticsearch resources.  This grants access to the Elasticsearch APIs and Kibana, but only through the IP/IP range you provide to the stack when it is deployed.  See the the **ESDomain** logical resource in [pipeline-es.yaml](pipeline-es/pipeline-es.yaml) to view the policy. 
 
 See the following resources for other methods of setting up access to Kibana HTTP resources:
 
@@ -49,13 +49,22 @@ See the following resources for other methods of setting up access to Kibana HTT
 
 ## Deploy the stack 
 
- To get started right away just launch the stack using the button below.  You can also create your own deployment package using the instructions in the [Build a deployment package from the github repo](#build-a-deployment- package-from-the-github-repo) section later in this document.
+ To get started right away just launch the stack using the button below.
+ 
+ Fill in the input parameters for the stack using the outputs from the `pipeline` stack you created previously.
 
 Region| Launch
 ------|-----
-US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/elementalrodeo99-us-east-1/pipeline/pipeline-es/pipeline-es.yaml)
+us-east-1 (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-east-1/vodtk/3-mediaconvert-workload-monitoring/pipeline-es/pipeline-es.yaml)
+us-west-2 (Oregon) | [![Launch in us-west-2](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline&templateURL=https://s3.amazonaws.com/rodeolabz-us-west-2/vodtk/3-mediaconvert-workload-monitoring/pipeline-es/pipeline-es.yaml)
 
-1. Fill in the input parameters for the stack using the outputs from the `pipeline` stack you created previously.
+
+
+## Run MediaConvert Jobs
+
+* After the stack is completely deployed, run several jobs so as to generate data to propagate to Elasticsearch. Creating indices below will fail if there's no data present.
+
+* If you will be using the sample dashboard provided in the tutorial, the `workflow` keyword is expected to be present in the job user metadata. Make sure to provide one, otherwise, some of the visualizations may not load properly.
 
 ## Configure Kibana
 
@@ -85,20 +94,18 @@ US East (N. Virginia) | [![Launch in us-east-1](http://docs.aws.amazon.com/AWSCl
 1. Select the **Management** tab from the Kibana side bar menu.
 2. Select **Saved Objects** from the top of the panel
 3. In the Saved Objects page, select the **Import** button.
-4. Navigate to the directory `REPO/pipeline/pipeline-es/dashboards` and select the file `workload-dashboard.json`
+4. In your repo, navigate to this directory `/3-MediaConvert-JobWorkloadMonitoring/pipeline-es/dashboards` and select the file [workload-dashboard.json](dashboards/workload-dashboard.json)
 5. Select **Open** and accept the warning message about overwritting duplicate objects.
 
     ![kibana saved objects](../images/kibana-saved-objects.png)
 
-6. Open the imported dashboard by selecting **Dashboard** from the Kibana sidebar menu.  Select the dashboard `MediaConvert Workload (last 1 hour)` from the list.
+6. Open the imported dashboard by selecting **Dashboard** from the Kibana sidebar menu.  Select the dashboard `MediaConvert Workload(last 1 hour)` from the list.
 
     ![kibana dashboard](../images/kibana-dashboard.png)
-
-
 
 7. You may need to adjust the time picker in the upper right corner to select the last hour of data.  Click on the timepicker and select the **Quick** menu.  Then select **Last 1 hour** from the choices presented.
 
     ![timepicker](../images/kibana-timepicker.png)
 
 
-NOTE: the appearance of the dashboard may be slightly different than the one shown here.  It depends on the workload running in your account and region where the stack is deployed.  There should be one row of graphs for each MediaConvet queue that has active MediaConvert jobs in the past hour.  There should also be a table at the bottom of the page with job details for the last hour.  The dashboard in the example shows an account with 3 MediaConvert queues.
+NOTE: the appearance of the dashboard may be slightly different than the one shown here.  It depends on the workload running in your account and region where the stack is deployed.  There should be one row of graphs for each MediaConvert queue that has active MediaConvert jobs in the past hour.  There should also be a table at the bottom of the page with job details for the last hour.  The dashboard in the example shows an account with 2 MediaConvert queues.

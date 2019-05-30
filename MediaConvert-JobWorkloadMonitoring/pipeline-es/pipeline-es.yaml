@@ -25,7 +25,7 @@ Parameters:
     Type: Number
     Default: 1
   ElasticsearchAccessIP:
-    Description: "The IP where you want to test Kibana and Elasticsearch APIs from, you will likely want to update the access policies created by the stack to fit your needs.  This IP access configuration will get you started w/o requiring opening your instance to public access"
+    Description: "The IP or IP range (in CIDR notation) where you want to test Kibana and Elasticsearch APIs from, you will likely want to update the access policies created by the stack to fit your needs.  This IP access configuration will get you started w/o requiring opening your instance to public access"
     Type: String
     Default: None
   EventStreamARN:
@@ -48,8 +48,8 @@ Parameters:
 Mappings:
   SourceCode:
     General:
-      S3Bucket: "elementalrodeo99-us-east-1"
-      KeyPrefix: "pipeline/pipeline-es"
+      S3Bucket: "rodeolabz"
+      KeyPrefix: "vodtk/3-mediaconvert-workload-monitoring/pipeline-es"
 
 Resources:
    
@@ -97,13 +97,14 @@ Resources:
             Resource: 
               - !Join ["", ["arn:aws:es:", !Ref "AWS::Region", ":", !Ref "AWS::AccountId", ":domain/", !Sub "${AWS::StackName}-esdomain"]]
           - Effect: Allow
-            Principal: "*"
+            Principal:  
+              AWS: "*"
             Action:
               - es:*
             Condition:
               IpAddress:
                 aws:SourceIp: 
-                  - !Join ["", [!Ref ElasticsearchAccessIP, "/0"]]
+                  - !Ref ElasticsearchAccessIP
             Resource:
               - !Join ["", ["arn:aws:es:", !Ref "AWS::Region", ":", !Ref "AWS::AccountId", ":domain/", !Sub "${AWS::StackName}-esdomain/*"]] 
       DomainName: !Sub "${AWS::StackName}-esdomain"
@@ -343,11 +344,11 @@ Resources:
       Handler: index-custom-resource.lambda_handler
       Role: !GetAtt CustomResourceRole.Arn
       Code:
-        S3Bucket: !FindInMap ["SourceCode", "General", "S3Bucket"]
+        S3Bucket: !Join ["-", [!FindInMap ["SourceCode", "General", "S3Bucket"], Ref: "AWS::Region"]]
         S3Key: !Join ["/", [!FindInMap ["SourceCode", "General", "KeyPrefix"],  "lambda.zip"]]
       Environment:
         Variables:
-          ElasticsearchEndpoint: !Join ["", ["https://", !GetAtt ESDomain.DomainEndpoint]]
+          ElasticsearchEndpoint: !GetAtt ESDomain.DomainEndpoint
       Runtime:  python3.6
       Timeout: 120
 
@@ -360,7 +361,7 @@ Resources:
 Outputs: 
   KibanaURL: 
     Description: "Kibana URL"
-    Value: !Join ["", ["http://", !GetAtt ESDomain.DomainEndpoint, "/_plugin/kibana/"]]
+    Value: !Join ["", ["https://", !GetAtt ESDomain.DomainEndpoint, "/_plugin/kibana/"]]
   ElasticsearchEndpoint: 
     Description: "Elasticsearch domain endpoint"
     Value: !Join ["", ["https://", !GetAtt ESDomain.DomainEndpoint]]

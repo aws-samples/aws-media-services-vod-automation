@@ -9,9 +9,10 @@ import logging
 import os
 import traceback
 import elasticsearch
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, RequestsHttpConnection
 import http.client
 from botocore.vendored import requests
+from requests_aws4auth import AWS4Auth
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -142,7 +143,12 @@ def lambda_handler(event, context):
     try:   
         if event['RequestType'] == 'Create':
             logger.info('CREATE!')
-            es = Elasticsearch([host], verify_certs=True)
+
+            session = boto3.Session()
+            credentials = session.get_credentials()
+            awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, session.region_name, 'es', session_token=credentials.token)
+
+            es = Elasticsearch([{'host': host, 'port': 443}], http_auth = awsauth, use_ssl = True, verify_certs=True, connection_class = RequestsHttpConnection)
             result = es.indices.put_template(name='jobtemplate', body=job_index_template)
             status1 = result.get('acknowledged', False)
             result = es.indices.put_template(name='metrictemplate', body=metric_index_template)

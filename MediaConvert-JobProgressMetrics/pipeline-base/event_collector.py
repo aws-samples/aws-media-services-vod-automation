@@ -393,7 +393,7 @@ def jobCreateEvent(event, JOBTABLE):
         job['eventTimes']['firstProgressingTime'] = tsevent
 
     # no need to calculate metrics if the job has already been canceled; let's retain the info that was there before canceling
-    if job['status'] != 'CANCELED':
+    if job['status'] == 'CANCELED':
         job['progressMetrics'] = storedJob['progressMetrics']
     # otherwise, calculate metrics
     else:
@@ -424,6 +424,12 @@ def jobStateChangeEvent(event, JOBTABLE):
         job['eventTimes']['lastTime'] = tsevent
         job['progressMetrics'] = {}
         job['id'] = jobId
+        
+        # if this is the first event for this job and we never saw a job create 
+        # in the case of an error for example, then we need to add the filters
+        job['createdAt'] = int(int(event['detail']['timestamp'])/1000)-1
+        job['filters'] = getJobMetricDimensions(job)['filters']
+
 
     else:
         job = storedJob
@@ -516,7 +522,7 @@ def jobStateChangeEvent(event, JOBTABLE):
         job['eventTimes']['lastProgressingTime'] = tsevent
         
         # lastStatusTime = timestamp of latest status update or COMPLETE event
-        job['eventTimes']['lastStatusTime'] = tsevent
+        job['eventTimes']['lastStatusTime'] = tsevent + 1
 
         # framesDecoded = most recent STATUS event frames decoded or frame count if COMPLETE event
         if 'analysis' in job and job['status'] == 'COMPLETE':
@@ -540,6 +546,8 @@ def jobStateChangeEvent(event, JOBTABLE):
 
         if job['status'] == 'ERROR':
             job['progressMetrics'] = calculateProgressMetrics(job)
+            if 'percentJobComplete' not in job['progressMetrics']:
+                job['progressMetrics']['percentJobComplete'] = 0
     
         # if we saw an error/canceled event before we created the job, put in a createdAt time
         if 'createdAt' not in job:
@@ -554,7 +562,6 @@ def lambda_handler(event, context):
     in dydnamodb that it updates as events occur.  Since events may arrive out of order from the 
     time they are generated, we need to be careful about overwriting newer information
     with older information.  
-
     Each event should carry at least these key value pairs:
     
     'MediaConvertCollecterEvent': { 
