@@ -39,16 +39,16 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
     ![Create source bucket screenshot](../images/s3-create-watchfolder.png)
 
-## 1. Create an Amazon S3 bucket to use for storing converted video outputs from MediaConvert
+## 2. Create an Amazon S3 bucket to use for storing converted video outputs from MediaConvert
 
 In this section, you will use the AWS console to create an S3 bucket to store video and image outputs from MediaConvert.  Later, the resulting videos and images will be played out using the S3 https resource using several different players both inside and outside of the the amazonaws domain.  
 
 In order to facilitate https access from anonymous sources inside and outside the amazonaws domain, such as video players on the internet, you will add the following settings to the S3 bucket:
 
 * a bucket policy that enables public read   
-* a policy for Cross Origin Resource Sharing (CORS) 
+* a policy for Cross Origin Resource Sharing (CORS)
 
-#### Detailed instructions 
+#### Detailed instructions
 
 1. In the AWS Management Console choose **Services** then select **S3** under Storage.
 
@@ -110,13 +110,13 @@ In order to facilitate https access from anonymous sources inside and outside th
 
 #### Background
 
-MediaConvert will will need to be granted permissions to read and write files from your S3 buckets and generate CloudWatch events as it processes videos.  MediaConvert is granted the permissions it needs by assuming a role that is passed to it along with trancoding jobs. 
+MediaConvert will will need to be granted permissions to read and write files from your S3 buckets and generate CloudWatch events as it processes videos.  MediaConvert is granted the permissions it needs by assuming a role that is passed to it along with trancoding jobs.
 
 #### High-Level Instructions
 
 Use the IAM console to create a new role. Name it `MediaConvertRole` and select AWS Lambda for the role type. Use inline policies to grant permissions to other resources needed for the lambda to execute.
 
-#### Step-by-step instructions 
+#### Step-by-step instructions
 
 1. From the AWS Management Console, click on **Services** and then select **IAM** in the Security, Identity & Compliance section.
 
@@ -147,9 +147,9 @@ Every Lambda function has an IAM role associated with it. This role defines what
 
 #### High-Level Instructions
 
-Use the IAM console to create a role. Name it `VODLambdaRole` and select AWS Lambda for the role type. 
+Use the IAM console to create a role. Name it `VODLambdaRole` and select AWS Lambda for the role type.
 
-Attach the managed policy called `AWSLambdaBasicExecutionRole` to this role to grant the necessary CloudWatch Logs permissions. 
+Attach the managed policy called `AWSLambdaBasicExecutionRole` to this role to grant the necessary CloudWatch Logs permissions.
 
 Use inline policies to grant permissions to other resources needed for the lambda to execute.
 
@@ -242,11 +242,11 @@ This lambda will submit a job to MediaConvert, but it won't wait for the job to 
 
 #### High-Level Instructions
 
-Use the AWS Lambda console to create a new Lambda function called `VODLambdaConvert` that will process the API requests. Use the provided [convert.py](convert.py) example implementation for your function code. 
+Use the AWS Lambda console to create a new Lambda function called `VODLambdaConvert` that will process the API requests. Use the provided [convert.py](convert.py) example implementation for your function code.
 
 Make sure to configure your function to use the `VODLambdaRole` IAM role you created in the previous section.
 
-#### Step-by-step instructions 
+#### Step-by-step instructions
 
 1. Choose **Services** then select **Lambda** in the Compute section.
 
@@ -275,7 +275,7 @@ Make sure to configure your function to use the `VODLambdaRole` IAM role you cre
 1. On the Configuration tab of the VODLambdaConvert page, in the  **function code** panel:  
 
     1. Select **Upload a zip file** for the **Code entry type**
-    2. Click **Upload** and select the zip file you created in the previous step from the dialog box. 
+    2. Click **Upload** and select the zip file you created in the previous step from the dialog box.
 
     1. Enter `convert.handler` for the **Handler** field.
 
@@ -289,8 +289,8 @@ Make sure to configure your function to use the `VODLambdaRole` IAM role you cre
 
     ![Lambda function code screenshot](../images/lambda-environment.png)  
 
-1. On the  **Basic Settings** panel, enter the following: 
-    
+1. On the  **Basic Settings** panel, enter the following:
+
     1. Timeout = 2 min
 
 1. Scroll back to the top of the page and click on the **Save** button.
@@ -377,7 +377,7 @@ Use the AWS Lambda console to add a putItem trigger from the `vod-watchfolder-fi
     ![Lambda trigger screenshot](../images/lambda-s3-trigger.png)
 
 1. Scroll down to the **Configure triggers** panel:
-  
+
     1. Select `vod-watchfolder-firstname-lastname` or the name you used for the watchfolder bucket you created earlier in this module for the **Bucket**.
     2. Select **PUT** for the **Event type**.
     3. Enter `inputs/` for the **Prefix**
@@ -388,7 +388,7 @@ Use the AWS Lambda console to add a putItem trigger from the `vod-watchfolder-fi
 
 ## Test the watchfolder automation
 
-You can use your own video or use the test.mp4 video included in this folder to test the workflow. 
+You can use your own video or use the test.mp4 video included in this folder to test the workflow.
 
 In the next module of this lab, we will setup automated monitoring of jobs created using the watchfolder workflow.  Until then, you can monitor the the MediaConvert console.  
 
@@ -600,7 +600,7 @@ When the VODNotifyEventRule matches a COMPLETE or ERROR event from MediaConvert,
         ],
         "Resource": "arn:aws:sns:us-west-2:ACCOUNT:vod-notification"
         }
-        
+
     ]
     }
     ```
@@ -616,4 +616,3 @@ When the VODNotifyEventRule matches a COMPLETE or ERROR event from MediaConvert,
 5. When the job finished, check the email you used to setup the workflow.  You should have a message similar to this:
 
     ![sns email](../images/sns-email.png)
-
