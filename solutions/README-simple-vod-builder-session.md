@@ -12,7 +12,7 @@
 10. Check the box that says "I acknowledge that AWS CloudFormation might create IAM resources."
 11. Click on the **Create stack** button
 
-## Execute the VOD on AWS Workflow
+## Execute the VOD on AWS workflow
 
 1. Check your email for a message with the subject **AWS Notification - Subscription Confirmation**. 
 2. Open the email and click on the link to confirm subscription.
@@ -35,7 +35,7 @@
 7. Now force the player to play the lowest and highest bitrate videos by selecting them from the settings.  
 8. What do you notice?
 
-## Walk though the VOD on AWS Workflow
+## Walk though the VOD on AWS workflow
 
 ### S3
 
