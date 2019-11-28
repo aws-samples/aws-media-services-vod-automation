@@ -100,7 +100,7 @@ CloudFront is serving to purposes in this workflow.  It is bringing the video da
 
 1. Take a look at the domain for the video outputs from the Job Complete email.  Notice that the origin is CloudFront rather than S3 or MediaPackage.
 2. Open the CloudFront console.
-3. Find the CloudFront distribuion whose Origin is has a bucet name that starts with **`<stack-name>`-destination**  
+3. Find the CloudFront distribuion whose Origin is has a bucet name that starts with `<stack-name>`-destination  
 4. Click on the link in the **ID** column 
 5. Navigate to the **Origins** tab and note that there are two origins configured: one for S3 and one for MediaPackage.
 
