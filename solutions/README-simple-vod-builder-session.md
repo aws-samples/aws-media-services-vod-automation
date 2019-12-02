@@ -4,7 +4,7 @@
 2. Go to https://aws.amazon.com/solutions/video-on-demand-on-aws/
 3. Click on the **Launch the solution in the AWS console** button
 4. Click next to go to the **Stack details** page
-5. Fill in the **stack name **
+5. Fill in the **Stack name**
 6. Fill in the **Notification email address** with an email you can access during the lab
 7. Change the **Enable MediaPackage** parameter to `true`
 8. Use the defaults for the rest of the parameters
