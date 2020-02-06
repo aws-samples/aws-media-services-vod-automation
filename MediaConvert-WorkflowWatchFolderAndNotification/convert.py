@@ -68,6 +68,7 @@ def handler(event, context):
         bucket = S3.Bucket(sourceS3Bucket)
         for obj in bucket.objects.filter(Prefix='jobs/'):
             if obj.key != "jobs/":
+                jobInput = {}
                 jobInput['filename'] = obj.key
                 logger.info('jobInput: %s', jobInput['filename'])
 
