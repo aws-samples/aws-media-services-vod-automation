@@ -29,7 +29,7 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
 1. In the AWS Management Console choose **Services** then select **S3** under Storage.
 
-1. Choose **+Create Bucket**
+1. Choose **Create Bucket**
 
 1. Provide a globally unique name for your bucket such as `vod-watchfolder-firstname-lastname`.
 
@@ -52,13 +52,13 @@ In order to facilitate https access from anonymous sources inside and outside th
 
 1. In the AWS Management Console choose **Services** then select **S3** under Storage.
 
-1. Choose **+Create Bucket**.
+1. Choose **Create Bucket**.
 
 1. Provide a globally unique name for your bucket such as `vod-mediabucket`.
 
 1. Select the Region you've chosen to use for this workshop from the dropdown.
 
-1. Choose **Create** in the lower left of the dialog without selecting a bucket to copy settings from.
+1. Choose **Create bucket** to create the bucket.
 
 1. From the S3 console select the bucket you just created and go to the Overview page.
 
@@ -72,27 +72,11 @@ In order to facilitate https access from anonymous sources inside and outside th
 
 1. Select the **Permissions** tab.
 
-1. Select **Bucket policy** and paste the following JSON into the bucket policy editor.
+2. Select **Block public access** and and uncheck the **Block all public access** checkbox.  
 
-1. Replace the text **YOUR-BUCKETNAME** with the name of the bucket you created earlier in this module.
+3. Click on **Save**
 
-    ```
-    {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AddPerm",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::YOUR-BUCKETNAME/*"
-        }
-    ]
-    }
-    ```
-1. Click on **Save**
-
-1. Next, click on **CORS configruation** and replace the default XML with the following XML in the **CORS configuration editor**.
+4. Next, click on **CORS configruation** and replace the default XML with the following XML in the **CORS configuration editor**.
     ```
     <?xml version="1.0" encoding="UTF-8"?>
     <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
@@ -104,7 +88,7 @@ In order to facilitate https access from anonymous sources inside and outside th
     </CORSRule>
     </CORSConfiguration>
     ```
-1. Click on the **Save** button
+5. Click on the **Save** button
 
 ## 3. Create an IAM Role to Pass to MediaConvert
 
@@ -255,7 +239,7 @@ Make sure to configure your function to use the `VODLambdaRole` IAM role you cre
 1. Choose the **Author from scratch** button.
 
 1. On the **Author from Scratch** panel, enter `VODLambdaConvert` in the **Name** field.
-2. Select **Python 2.7** for the **Runtime**.
+2. Select **Python 3.8** for the **Runtime**.
 
 1. Choose **Use and existing role** from the Role dropdown.
 

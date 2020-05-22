@@ -332,6 +332,13 @@
             "TimedMetadataId3Period": 10,
             "CaptionLanguageSetting": "OMIT",
             "Destination": "s3://<MEDIABUCKET>/HLS/",
+            "DestinationSettings": {
+              "S3Settings": {
+                "AccessControl": {
+                  "CannedAcl": "PUBLIC_READ"
+                }
+              }
+            },
             "TimedMetadataId3Frame": "PRIV",
             "CodecSpecification": "RFC_4281",
             "OutputSelection": "MANIFESTS_AND_SEGMENTS",
@@ -430,7 +437,14 @@
         "OutputGroupSettings": {
           "Type": "FILE_GROUP_SETTINGS",
           "FileGroupSettings": {
-            "Destination": "s3://<MEDIABUCKET>/MP4/"
+            "Destination": "s3://<MEDIABUCKET>/MP4/",
+            "DestinationSettings": {
+              "S3Settings": {
+                "AccessControl": {
+                  "CannedAcl": "PUBLIC_READ"
+                }
+              }
+            }
           }
         }
       },
@@ -468,7 +482,14 @@
         "OutputGroupSettings": {
           "Type": "FILE_GROUP_SETTINGS",
           "FileGroupSettings": {
-            "Destination": "s3://<MEDIABUCKET>/Thumbnails/"
+            "Destination": "s3://<MEDIABUCKET>/Thumbnails/",
+            "DestinationSettings": {
+              "S3Settings": {
+                "AccessControl": {
+                  "CannedAcl": "PUBLIC_READ"
+                }
+              }
+            }
           }
         }
       }

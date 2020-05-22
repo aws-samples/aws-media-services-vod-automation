@@ -15,7 +15,7 @@ Mappings:
   SourceCode:
     General:
       S3Bucket: "rodeolabz"
-      KeyPrefix: "vodtk/1a-mediaconvert-watchfolder"
+      KeyPrefix: "vodtk0.0.2/1a-mediaconvert-watchfolder"
 
 Resources:
 
@@ -155,7 +155,7 @@ Resources:
           DestinationBucket: !Ref MediaBucket
           MediaConvertRole: !GetAtt MediaConvertRole.Arn
           Application: !Sub "${AWS::StackName}"
-      Runtime:  python2.7
+      Runtime:  python3.8
       Timeout: 120
   
   MediaBucket:
@@ -178,18 +178,18 @@ Resources:
     DeletionPolicy: Retain
     Type: "AWS::S3::Bucket"
 
-  MediaBucketPolicy:
-    Properties:
-      Bucket: !Ref MediaBucket
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          -
-            Effect: Allow
-            Principal: "*"
-            Action: s3:GetObject
-            Resource: !Sub "arn:aws:s3:::${MediaBucket}/*"
-    Type: "AWS::S3::BucketPolicy"
+  # MediaBucketPolicy:
+  #   Properties:
+  #     Bucket: !Ref MediaBucket
+  #     PolicyDocument:
+  #       Version: 2012-10-17
+  #       Statement:
+  #         -
+  #           Effect: Allow
+  #           Principal: "*"
+  #           Action: s3:GetObject
+  #           Resource: !Sub "arn:aws:s3:::${MediaBucket}/*"
+  #   Type: "AWS::S3::BucketPolicy"
   
   NotificationTopicPolicy: 
     Type: AWS::SNS::TopicPolicy
