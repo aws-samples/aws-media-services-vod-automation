@@ -4,7 +4,7 @@
 2. Go to https://aws.amazon.com/solutions/video-on-demand-on-aws/
 3. Click on the **Launch the solution in the AWS console** button
 4. Click next to go to the **Stack details** page
-5. Fill in the **stack name **
+5. Fill in the **Stack name**
 6. Fill in the **Notification email address** with an email you can access during the lab
 7. Change the **Enable MediaPackage** parameter to `true`
 8. Use the defaults for the rest of the parameters
@@ -12,7 +12,7 @@
 10. Check the box that says "I acknowledge that AWS CloudFormation might create IAM resources."
 11. Click on the **Create stack** button
 
-## Execute the VOD on AWS Workflow
+## Execute the VOD on AWS workflow
 
 1. Check your email for a message with the subject **AWS Notification - Subscription Confirmation**. 
 2. Open the email and click on the link to confirm subscription.
@@ -35,7 +35,7 @@
 7. Now force the player to play the lowest and highest bitrate videos by selecting them from the settings.  
 8. What do you notice?
 
-## Walk though the VOD on AWS Workflow
+## Walk though the VOD on AWS workflow
 
 ### S3
 
@@ -100,7 +100,7 @@ CloudFront is serving to purposes in this workflow.  It is bringing the video da
 
 1. Take a look at the domain for the video outputs from the Job Complete email.  Notice that the origin is CloudFront rather than S3 or MediaPackage.
 2. Open the CloudFront console.
-3. Find the CloudFront distribuion whose Origin is has a bucet name that starts with **`<stack-name>`-destination**  
+3. Find the CloudFront distribuion whose Origin is has a bucket name that starts with `<stack-name>`-destination  
 4. Click on the link in the **ID** column 
 5. Navigate to the **Origins** tab and note that there are two origins configured: one for S3 and one for MediaPackage.
 
