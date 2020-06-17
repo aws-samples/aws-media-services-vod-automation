@@ -68,6 +68,7 @@ def handler(event, context):
         bucket = S3.Bucket(sourceS3Bucket)
         for obj in bucket.objects.filter(Prefix='jobs/'):
             if obj.key != "jobs/":
+                jobInput = {}
                 jobInput['filename'] = obj.key
                 logger.info('jobInput: %s', jobInput['filename'])
 
@@ -145,6 +146,12 @@ def handler(event, context):
                     templateDestinationKey = urlparse(templateDestination).path
                     logger.info("templateDestinationKey == %s", templateDestinationKey)
                     outputGroup['OutputGroupSettings']['MsSmoothGroupSettings']['Destination'] = destinationS3+templateDestinationKey
+                    
+                elif outputGroup['OutputGroupSettings']['Type'] == 'CMAF_GROUP_SETTINGS':
+                    templateDestination = outputGroup['OutputGroupSettings']['CmafGroupSettings']['Destination']
+                    templateDestinationKey = urlparse(templateDestination).path
+                    logger.info("templateDestinationKey == %s", templateDestinationKey)
+                    outputGroup['OutputGroupSettings']['CmafGroupSettings']['Destination'] = destinationS3+templateDestinationKey
                 else:
                     logger.error("Exception: Unknown Output Group Type %s", outputGroup['OutputGroupSettings']['Type'])
                     statusCode = 500
