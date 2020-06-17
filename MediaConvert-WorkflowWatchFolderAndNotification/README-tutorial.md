@@ -363,11 +363,11 @@ Use the AWS Lambda console to add a putItem trigger from the `vod-watchfolder-fi
 1. Scroll down to the **Configure triggers** panel:
   
     1. Select `vod-watchfolder-firstname-lastname` or the name you used for the watchfolder bucket you created earlier in this module for the **Bucket**.
-    2. Select **PUT** for the **Event type**.
+    2. Select **All object create events** for the **Event type**.
     3. Enter `inputs/` for the **Prefix**
     3. Leave the rest of the settings as the default and click the **Add** button.
 
-        ![Lambda trigger configuration screenshot](../images/lambda-trigger-confgure.png)
+        ![Lambda trigger configuration screenshot](../images/lambda-trigger-configure.png)
 
 
 ## Test the watchfolder automation
