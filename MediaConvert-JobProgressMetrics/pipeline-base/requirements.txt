@@ -12,7 +12,7 @@ lambda-uploader==1.2.0
 pyasn1==0.4.2
 python-dateutil==2.6.1
 requests==2.20.0
-PyYAML==5.1
+PyYAML==5.4
 requests-aws4auth==0.9
 rsa==3.4.2
 s3transfer==0.1.13
