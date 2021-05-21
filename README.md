@@ -1,6 +1,6 @@
 # Scope of this tutorial
 
-This tutorial has was created as part of a series of workshops for getting started with automating around AWS MediaConvert. As of now, there are several other resources and code samples in this space that serve as a better starting point for implementing a watchfolder workflow:
+This tutorial has was created as part of a series of workshops for learning about automating around AWS MediaConvert. As of now, there are several other resources and code samples in this space that serve as a better starting point for implementing a watchfolder workflow:
 
 [VOD on AWS Foundation Solution](https://aws.amazon.com/solutions/implementations/video-on-demand-on-aws/) - this solution implements a similar watchfolder architecture as the tutorial. It adds a tighter security posture and CloudFront origin for video play out.
 
