@@ -1,3 +1,11 @@
+# Scope of this tutorial
+
+This tutorial has was created as part of a series of workshops for getting started with automating around AWS MediaConvert. As of now, there are several other resources and code samples in this space that serve as a better starting point for implementing a watchfolder workflow:
+
+[VOD on AWS Foundation Solution](https://aws.amazon.com/solutions/implementations/video-on-demand-on-aws/) - this solution implements a similar watchfolder architecture as the tutorial. It adds a tighter security posture and CloudFront origin for video play out.
+
+[VOD on AWS Solution](https://aws.amazon.com/solutions/implementations/video-on-demand-on-aws/) - this solution builds on the Foundation architecture by adding DynamoDB state management to track transcoding jobs triggered by the workflow and Step Functions for workflow orchestration.
+
 # VOD Automation Toolkit
 
 This project contains examples for automating Video On Demand (VOD) workflows on AWS.  These are code samples to get you started on common tasks rather than an end to end architecture suitable for production.  We will prefer simple, easy to understand examples that are appropriate to answer the "How do I ...?" kind of questions someone might find on  the AWS Forums.
