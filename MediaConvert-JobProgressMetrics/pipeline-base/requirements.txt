@@ -18,6 +18,6 @@ rsa==4.7
 s3transfer==0.1.13
 six==1.11.0
 timecode==1.2.0
-urllib3==1.24.2
+urllib3==1.26.5
 virtualenv==15.1.0
 xmltodict==0.11.0
