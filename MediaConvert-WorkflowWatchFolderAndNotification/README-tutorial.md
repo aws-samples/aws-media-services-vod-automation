@@ -39,7 +39,7 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
     ![Create source bucket screenshot](../images/s3-create-watchfolder.png)
 
-## 1. Create an Amazon S3 bucket to use for storing converted video outputs from MediaConvert
+## 2. Create an Amazon S3 bucket to use for storing converted video outputs from MediaConvert
 
 In this section, you will use the AWS console to create an S3 bucket to store video and image outputs from MediaConvert.  Later, the resulting videos and images will be played out using the S3 https resource using several different players both inside and outside of the the amazonaws domain.  
 
@@ -123,7 +123,7 @@ Use the IAM console to create a new role. Name it `MediaConvertRole` and select 
 
 1. Save the ARN for use later
 
-## 2. Create an IAM Role for Your Lambda function
+## 4. Create an IAM Role for Your Lambda function
 
 #### Background
 
@@ -216,7 +216,7 @@ Use inline policies to grant permissions to other resources needed for the lambd
 
 1. Click on the **Create Policy** button.
 
-## 3. Create a lambda Function for converting videos
+## 5. Create a lambda Function for converting videos
 
 #### Background
 
