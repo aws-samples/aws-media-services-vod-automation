@@ -1,6 +1,9 @@
 
-ARCHIVED: this tutorial is begin archived.  For a more up-to-date implementation of the stack that is built here, please see the [VOD on AWS Foundation solution implementation](https://aws.amazon.com/solutions/implementations/video-on-demand-on-aws/).
+# **This project has been ARCHIVED** 
 
+For a more up-to-date implementation of the watch folder stack that is built in part 1, please see the [VOD on AWS Foundation solution implementation](https://aws.amazon.com/solutions/implementations/video-on-demand-on-aws/).
+
+-----------------------------
 # Scope of this tutorial
 
 This tutorial has was created as part of a series of workshops for learning about automating around AWS MediaConvert. As of now, there are several other resources and code samples in this space that serve as a better starting point for implementing a watchfolder workflow:
